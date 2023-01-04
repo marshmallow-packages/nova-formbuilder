@@ -1,0 +1,121 @@
+<?php
+
+namespace Marshmallow\NovaFormbuilder\Nova;
+
+use Laravel\Nova\Resource;
+use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Heading;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\BelongsTo;
+use Marshmallow\Nova\TinyMCE\TinyMCE;
+use Outl1ne\MultiselectField\Multiselect;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Marshmallow\NovaSortable\Traits\HasSortableRows;
+
+class Step extends Resource
+{
+    use HasSortableRows;
+
+    public static $perPageViaRelationship = 15;
+
+    public static $clickAction = 'detail';
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = \Marshmallow\NovaFormbuilder\Models\Step::class;
+
+    /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'name';
+
+    /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = [
+        'id', 'title', 'name'
+    ];
+
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function fields(NovaRequest $request)
+    {
+        return [
+            // Number::make(__('Order'), 'step_number')->readonly(),
+            // ID::make()->sortable(),
+            BelongsTo::make(__('Form'), 'form', Form::class)
+                ->withoutTrashed()
+                ->help(__('The form that this step belongs to')),
+            Text::make(__('Name'), 'name')->rules('required')->help(__('The name of this step (Only used for internal purposes)')),
+            Textarea::make(__('Description'), 'description')->help(__('The description of this step (Displayed on the form)'))->hideFromIndex(),
+            Text::make(__('Title'), 'title')->help(__('The title of this step (Displayed on the form)')),
+            Text::make(__('Subtitle'), 'subtitle')->help(__('The subtitle of this step (Displayed on the form)'))->hideFromIndex(),
+            Boolean::make(__('Active'), 'active')->default(true)->help(__('Is this step active?')),
+            // TinyMCE::make(__('Info'), 'info')->help(__('Extra information for this step (Only used for internal purposes)'))->hideFromIndex(),
+            HasMany::make(__('Questions'), 'questions', Question::class),
+        ];
+    }
+
+    /**
+     * Get the cards available for the request.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function cards(NovaRequest $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the filters available for the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function filters(NovaRequest $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the lenses available for the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function lenses(NovaRequest $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the actions available for the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function actions(NovaRequest $request)
+    {
+        return [];
+    }
+}
