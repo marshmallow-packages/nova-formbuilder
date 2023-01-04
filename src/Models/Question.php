@@ -180,8 +180,8 @@ class Question extends Model implements Sortable
             }
         }
 
-        if ($this->validation_rules) {
-            $all_rules[] = $this->validation_rules;
+        if ($this->validation_rules_set) {
+            $all_rules[] = $this->validation_rules_set;
         }
 
         $digit_min = $this->digit_min;
