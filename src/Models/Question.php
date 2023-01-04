@@ -2,11 +2,8 @@
 
 namespace Marshmallow\NovaFormbuilder\Models;
 
-
-
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use App\Models\Traits\HasExtraData;
 use Spatie\EloquentSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,6 +14,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Marshmallow\Nova\Flexible\Concerns\HasFlexible;
 use Marshmallow\NovaFormbuilder\Models\QuestionAnswer;
+use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
+use Marshmallow\NovaFormbuilder\Models\Traits\HasExtraData;
 use Marshmallow\NovaFormbuilder\Models\QuestionAnswerOption;
 
 class Question extends Model implements Sortable
@@ -24,14 +23,16 @@ class Question extends Model implements Sortable
     use SoftDeletes;
     use SortableTrait;
     use HasFlexible;
+    use HasExtraData;
+
     use CascadeSoftDeletes;
-    // use HasExtraData;
 
     protected $cascadeDeletes = ['question_answer_options'];
 
     protected $guarded = [];
 
     protected $with = ['step'];
+    // protected $with = ['step', 'form', 'question_answer_options'];
 
     public $sortable = [
         'order_column_name' => 'order',
@@ -46,6 +47,7 @@ class Question extends Model implements Sortable
 
     protected $casts = [
         'extra_data' => 'array',
+        'field_map' => QuestionFieldMap::class,
     ];
 
     public static function boot()
@@ -307,6 +309,7 @@ class Question extends Model implements Sortable
     {
         return $this->getExtraDataCast('depends_on_question');
     }
+
     public function setDependsOnQuestionAttribute($value)
     {
         if (filled($value) && $value != 'none') {
@@ -387,8 +390,9 @@ class Question extends Model implements Sortable
             'family-name' => __('Last name'),
             'email' => __('E-mail'),
             'tel' => __('Phone'),
-            'street-address' => __('Adres'),
             'address-line1' => __('Street'),
+            'address-line2' => __('Housenumber'),
+            'address-line3' => __('Housenumber addon'),
             'address-level1' => __('Province'),
             'address-level2' => __('City'),
             'postal-code' => __('Zipcode'),

@@ -3,19 +3,20 @@
 namespace Marshmallow\NovaFormbuilder\Models;
 
 use Illuminate\Support\Str;
-use Marshmallow\NovaFormbuilder\Models\Question;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
+use Marshmallow\NovaFormbuilder\Models\Question;
 use Marshmallow\Nova\Flexible\Casts\FlexibleCast;
 use Marshmallow\Nova\Flexible\Concerns\HasFlexible;
+use Marshmallow\NovaFormbuilder\Models\Traits\HasExtraData;
 
 class Form extends Model
 {
-    // use HasExtraData;
     use SoftDeletes;
     use HasFlexible;
+    use HasExtraData;
     use CascadeSoftDeletes;
 
     protected $cascadeDeletes = ['steps'];

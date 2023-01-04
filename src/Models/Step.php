@@ -2,7 +2,6 @@
 
 namespace Marshmallow\NovaFormbuilder\Models;
 
-
 use Spatie\EloquentSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;

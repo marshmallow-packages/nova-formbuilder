@@ -2,15 +2,22 @@
 
 namespace Marshmallow\NovaFormbuilder\Models;
 
+use Illuminate\Support\Arr;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
-use Marshmallow\NovaFormbuilder\Models\Form;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Marshmallow\NovaFormbuilder\Models\Step;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Marshmallow\NovaFormbuilder\Models\Question;
 use Marshmallow\NovaFormbuilder\Models\QuestionAnswer;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
+use Marshmallow\NovaFormbuilder\Events\FormSubmissionEvent;
+use Spatie\MediaLibrary\MediaCollections\Models\Concerns\HasUuid;
 
-class FormSubmission extends Model
+class FormSubmission extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+    use HasUuid;
     use SoftDeletes;
 
     protected $guarded = [];
@@ -33,7 +40,7 @@ class FormSubmission extends Model
 
     public function getTitle()
     {
-        $title = "Form #{$this->id}: ";
+        $title = __("Formulier #") . $this->id . ": ";
         if ($this->formable) {
 
             $formable_title = $this->formable->title ?? null;
@@ -78,12 +85,38 @@ class FormSubmission extends Model
         return (object) $answers;
     }
 
+    public function getMappedAnswersAttribute()
+    {
+        $mapped_questions = $this->questions->whereNotNull('field_map');
+
+        if ($mapped_questions->count() == 0) {
+            return;
+        }
+        $mapped_question_keys = $mapped_questions->pluck('name')->toArray();
+
+        return collect($this->answers)
+            ->filter(function ($value, $key) use ($mapped_question_keys) {
+                return in_array($key, $mapped_question_keys);
+            })->mapWithKeys(function ($value, $key) use ($mapped_questions) {
+                $field_key = $mapped_questions->where('name', $key)->first()?->field_map;
+
+                if ($field_key) {
+                    return [$field_key->value => $value];
+                }
+                return [];
+            })->reject(fn ($value) => empty($value));
+    }
+
+    public function getMappedEmailAttribute()
+    {
+        $email_key = QuestionFieldMap::EMAIL->value;
+        return Arr::get($this->mapped_answers, $email_key);
+    }
 
     public function getFromAnswers($value)
     {
         return $this->question_answers->where('answer_key', $value)->first()->answer_value;
     }
-
 
     public function getMainImage()
     {
@@ -92,6 +125,61 @@ class FormSubmission extends Model
         }
 
         return '';
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('form_images')
+            ->registerMediaConversions(function (Media $media) {
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(250)
+                    ->height(250);
+                $this
+                    ->addMediaConversion('preview')
+                    ->width(250)
+                    ->height(250);
+
+                $this
+                    ->addMediaConversion('medium')
+                    ->width(500)
+                    ->height(500);
+            });
+
+        $this->addMediaCollection('form_image')
+            ->registerMediaConversions(function (Media $media) {
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(250)
+                    ->height(250);
+                $this
+                    ->addMediaConversion('preview')
+                    ->width(250)
+                    ->height(250);
+
+                $this
+                    ->addMediaConversion('medium')
+                    ->width(500)
+                    ->height(500);
+            });
+    }
+
+
+    public function hasImages()
+    {
+        return $this->getMedia('form_images')->count() ? true : false;
+    }
+
+    public function getImages()
+    {
+        return $this->getMedia('form_images');
+    }
+
+    public function getAllImages()
+    {
+        $images = $this->getMedia('form_images');
+        $main = $this->getMedia('form_image');
+        return $main->merge($images);
     }
 
     public function updateAnswers($input, Step $step)
@@ -109,6 +197,33 @@ class FormSubmission extends Model
         }
 
         $this->updateAnswerData($answer_data, $step);
+    }
+
+    public function finalize()
+    {
+        $this->update([
+            'title' => $this->getTitle(),
+            'submitted' => true,
+            'submitted_at' => now(),
+        ]);
+
+        event(new FormSubmissionEvent($this));
+
+        return $this;
+    }
+
+    public function getMediaCollectionNamesAttribute()
+    {
+        return $this->questions->pluck('media_collection_name')->unique()->flatten()->reject(fn ($name) => is_null($name));
+    }
+
+    public function getMediaAnswers()
+    {
+        $items = collect();
+        foreach ($this->media_collection_names as $collection_name) {
+            $items->add($this->getMedia($collection_name));
+        }
+        return $items->flatten();
     }
 
     public function updateAnswerData($answer_data, Step $step)
@@ -205,7 +320,17 @@ class FormSubmission extends Model
 
     public function getAnswerKeys()
     {
-        return [];
+        return [
+            // 'name',
+            // 'zipcode',
+            // 'house_number',
+            // 'municipality_id',
+            // 'province_id',
+            // 'city_id',
+            // 'country_id',
+            // 'active_from',
+            // 'active_till',
+        ];
     }
 
     public function getAnswers()
