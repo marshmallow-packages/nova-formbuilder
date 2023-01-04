@@ -49,7 +49,7 @@
 
 <div class="relative w-full">
     @if (!$hideLabel)
-        <x-mm-form-labels.tooltip-label :required="$required" for="{{ $attributes['id'] }}" :placeholder="$attributes['placeholder']"
+        <x-mm-forms-labels.tooltip-label :required="$required" for="{{ $attributes['id'] }}" :placeholder="$attributes['placeholder']"
             :question="$question" />
     @endif
     @if ($defer)
@@ -79,5 +79,5 @@
             @endforeach
         </select>
     @endif
-    <x-mm-form-error for="{{ $attributes['id'] }}" />
+    <x-mm-forms-error for="{{ $attributes['id'] }}" />
 </div>

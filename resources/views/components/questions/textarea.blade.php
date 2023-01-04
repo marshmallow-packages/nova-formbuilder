@@ -45,7 +45,7 @@
 <div class="relative" x-data="{ active: true, count: 0, maxCount: 0 }" x-init="count = $refs.countme.value.length;
 maxCount = $refs.countme.maxLength">
 
-    <x-mm-form-labels.tooltip-label class="mb-1 ml-1" :required="$required" for="{{ $attributes['id'] }}" :placeholder="$attributes['placeholder']"
+    <x-mm-forms-labels.tooltip-label class="mb-1 ml-1" :required="$required" for="{{ $attributes['id'] }}" :placeholder="$attributes['placeholder']"
         :question="$question" />
 
     <textarea rows="4" maxLength="500" x-ref="countme" id="{{ $attributes['id'] }}" name="{{ $attributes['name'] }}"
@@ -59,6 +59,6 @@ maxCount = $refs.countme.maxLength">
         <span x-html="count"></span> / <span x-html="maxCount"> </span> {{ __('karakters') }}
     </div>
 
-    <x-mm-form-error for="{{ $attributes['id'] }}" />
+    <x-mm-forms-error for="{{ $attributes['id'] }}" />
 
 </div>

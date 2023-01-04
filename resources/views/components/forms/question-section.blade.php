@@ -56,15 +56,15 @@
                         {{ __('Opgeslagen') }}
                     </x-mm-forms-action-message>
 
-                    <x-mm-form-buttons.button aria-label="next" wire:loading.attr="disabled">
+                    <x-mm-forms-buttons.button aria-label="next" wire:loading.attr="disabled">
                         {{ __('Volgende') }}
                         <i class="ml-1 fal fa-chevron-right"></i>
-                    </x-mm-form-buttons.button>
+                    </x-mm-forms-buttons.button>
                 </div>
 
-                <x-mm-form-buttons.button x-cloak aria-label="next" x-show="shouldShow" wire:loading.attr="disabled">
+                <x-mm-forms-buttons.button x-cloak aria-label="next" x-show="shouldShow" wire:loading.attr="disabled">
                     {{ __('Versturen') }}
-                </x-mm-form-buttons.button>
+                </x-mm-forms-buttons.button>
             </div>
 
         </div>

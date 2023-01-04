@@ -87,6 +87,6 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
      */
     protected function registerComponent(string $component)
     {
-        Blade::component('marshmallow::components.' . $component, 'mm-form-' . $component);
+        Blade::component('marshmallow::components.' . $component, 'mm-forms-' . $component);
     }
 }
