@@ -26,12 +26,12 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigrations([
-                '01_create_nova_formbuilder_forms_table',
-                '02_create_nova_formbuilder_form_formsubmissions_table',
-                '03_create_nova_formbuilder_steps_table',
-                '04_create_nova_formbuilder_questions_table',
-                '05_create_nova_formbuilder_question_answers_table',
-                '06_create_nova_formbuilder_question_answer_options_table',
+                'create_nova_formbuilder_forms_table',
+                'create_nova_formbuilder_form_formsubmissions_table',
+                'create_nova_formbuilder_steps_table',
+                'create_nova_formbuilder_questions_table',
+                'create_nova_formbuilder_question_answers_table',
+                'create_nova_formbuilder_question_answer_options_table',
             ])->hasInstallCommand(function (InstallCommand $command) {
                 $command->startWith(function (InstallCommand $command) {
                     $command->info('Hello, and welcome to the greatest Nova Form Builder package!');
