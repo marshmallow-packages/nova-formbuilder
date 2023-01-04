@@ -15,10 +15,27 @@
             "role": "Developer"
         }
     ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ],
     "require": {
         "php": "^8.1",
-        "spatie/laravel-package-tools": "^1.13.0",
-        "illuminate/contracts": "^9.0"
+        "dyrynda/laravel-cascade-soft-deletes": "^4.2",
+        "illuminate/contracts": "^9.0|^10.0",
+        "illuminate/database": "^9.0|^10.0",
+        "illuminate/support": "^9.0|^10.0",
+        "laravel/framework": "^9.0|^10.0",
+        "laravel/nova": "^4.14",
+        "livewire/livewire": "^v2.10",
+        "marshmallow/nova-flexible": "^v2.4",
+        "marshmallow/nova-multiselect-field": "^5.0",
+        "marshmallow/nova-sortable": "^3.3",
+        "nova-kit/nova-packages-tool": "^1.6",
+        "spatie/laravel-medialibrary": "^10.7",
+        "spatie/laravel-package-tools": "^1.13.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
