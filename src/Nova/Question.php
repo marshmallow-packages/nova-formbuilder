@@ -103,7 +103,7 @@ class Question extends Resource
             Select::make(__('Map to field'), 'field_map')->options(
                 QuestionFieldMap::allOptionsAsArray()
             )->displayUsingLabels()
-                ->help(__('Map this field for the form to a customer field')),
+                ->help(__('Map this field for the form to a user field')),
 
             Text::make(__('Prefix'), 'prefix')->hideFromIndex()->hide()->dependsOn(
                 ['type'],

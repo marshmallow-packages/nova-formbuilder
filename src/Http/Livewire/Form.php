@@ -3,7 +3,7 @@
 namespace Marshmallow\NovaFormbuilder\Http\Livewire\Forms;
 
 use Livewire\Component;
-use  Marshmallow\NovaFormbuilder\Http\Livewire\Traits\WithForm;
+use Marshmallow\NovaFormbuilder\Http\Livewire\Traits\WithForm;
 
 class Form extends Component
 {

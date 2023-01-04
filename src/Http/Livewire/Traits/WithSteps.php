@@ -7,9 +7,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Marshmallow\NovaFormbuilder\Models\FormSubmission;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Honeypot\Http\Livewire\Concerns\HoneypotData;
+use Spatie\Honeypot\Http\Livewire\Concerns\UsesSpamProtection;
 
 trait WithSteps
 {
+    use UsesSpamProtection;
+
+    public HoneypotData $extraFields;
+
     public $isMainComponent = false;
     public $state = [];
     public $hasMedia = false;
@@ -45,6 +51,7 @@ trait WithSteps
     public function mountWithSteps()
     {
         $this->mergeRules($this->questions);
+        $this->extraFields = new HoneypotData();
     }
 
     /**
@@ -80,6 +87,8 @@ trait WithSteps
         ray("Submit Step {$this->stepNumber} - Submit Data", $this->state)->blue();
 
         $this->resetErrorBag();
+
+        $this->protectAgainstSpam();
 
         foreach ($this->state as $key => $value) {
             if (is_array($value)) {

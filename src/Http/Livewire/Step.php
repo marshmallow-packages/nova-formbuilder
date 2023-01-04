@@ -2,13 +2,16 @@
 
 namespace Marshmallow\NovaFormbuilder\Http\Livewire\Forms;
 
+use App\Models\User;
 use Livewire\Component;
-use Marshmallow\NovaFormbuilder\Models\Form;
 use Illuminate\Support\Arr;
-use Marshmallow\NovaFormbuilder\Models\FormSubmission;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use Marshmallow\NovaFormbuilder\Http\Livewire\Traits\WithSteps;
+use Marshmallow\NovaFormbuilder\Models\Form;
+use Marshmallow\NovaFormbuilder\Models\FormSubmission;
+use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
 use Spatie\MediaLibraryPro\Http\Livewire\Concerns\WithMedia;
+use Marshmallow\NovaFormbuilder\Http\Livewire\Traits\WithSteps;
 
 class Step extends Component
 {
@@ -83,15 +86,24 @@ class Step extends Component
 
         if ($this->form_submission) {
             $form_submission_id = $this->form_submission['id'];
+            $form_submission = FormSubmission::find($form_submission_id);
 
-            $this->questions->each(function ($question) use ($form_submission_id) {
+            $answers = $form_submission->getAnswers();
+
+            $this->questions->each(function ($question) use ($answers) {
                 $name = $question->name;
-                $form_submission = FormSubmission::find($form_submission_id);
-                $answers = $form_submission->getAnswers();
+
+                if ($question->field_map && $this->user) {
+                    $field_name = $question->field_map->value;
+                    $value = $this->user->$field_name;
+                    if ($value) {
+                        $value = $this->user->$field_name;
+                        $this->state[$name] = $value;
+                    }
+                }
+
                 if (array_key_exists($name, $answers)) {
                     $this->state[$name] = $answers[$name];
-                } else {
-                    $this->state[$name] = null;
                 }
             });
         }
@@ -125,22 +137,13 @@ class Step extends Component
                     $this->has_autocomplete = true;
                 }
                 if ($question->prefill_with) {
-                    if ($this->state[$question->name] && !empty($this->state[$question->name])) {
+                    if (array_has($this->state, $question->name) && $this->state[$question->name] && !empty($this->state[$question->name])) {
                         return;
                     }
                     [$type, $field] = explode('.', $question->prefill_with);
 
-                    if ($type == 'addresses') {
-                        $address = $this->$type;
-                        if ($field == 'country') {
-                            $answer = $address['country']?->name;
-                        } elseif (Arr::has($address, $field)) {
-                            $answer = $address[$field];
-                        }
-                    } else {
-                        if ($this->$type && $this->$type->$field) {
-                            $answer = $this->$type->$field;
-                        }
+                    if ($this->$type && $this->$type->$field) {
+                        $answer = $this->$type->$field;
                     }
                     if (isset($answer) && filled($answer)) {
                         $this->state[$question->name] = $answer;
@@ -214,40 +217,5 @@ class Step extends Component
     public function getUserProperty()
     {
         return Auth::user() ?? null;
-    }
-
-    public function getCustomerProperty()
-    {
-        if ($this->user) {
-            return $this->user->customer;
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the current user of the application.
-     *
-     * @return mixed
-     */
-    public function getAddressesProperty()
-    {
-        $addresses = [];
-        if (!$this->customer) {
-            return null;
-        }
-
-        foreach ($this->customer->addresses as $address) {
-            $addresses[] = $address->customerProfileArray();
-        }
-
-        if (count($addresses) > 0) {
-            $addresses = collect($addresses)->where('is_default', 1)->first();
-            if (!$addresses) {
-                $addresses = collect($addresses)->first();
-            }
-        }
-
-        return $addresses;
     }
 }

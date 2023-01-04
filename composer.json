@@ -34,6 +34,7 @@
         "marshmallow/nova-multiselect-field": "^5.0",
         "marshmallow/nova-sortable": "^3.3",
         "nova-kit/nova-packages-tool": "^1.6",
+        "spatie/laravel-honeypot": "^4.3",
         "spatie/laravel-medialibrary": "^10.7",
         "spatie/laravel-package-tools": "^1.13.0"
     },

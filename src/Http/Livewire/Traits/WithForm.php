@@ -268,11 +268,7 @@ trait WithForm
         $form_submission->updateAnswers($input, $step);
 
         if ($last) {
-            $form_submission->update([
-                'submitted' => true,
-                'submitted_at' => now(),
-            ]);
-            event(new FormSubmissionEvent($form_submission));
+            $form_submission->finalize();
         }
 
         return $form_submission;

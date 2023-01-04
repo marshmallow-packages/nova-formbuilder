@@ -76,9 +76,33 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [Marshmallow](https://github.com/marshmallow-packages)
-- [All Contributors](../../contributors)
+-   [Marshmallow](https://github.com/marshmallow-packages)
+-   [All Contributors](../../contributors)
 
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+## TODO
+[] remove Domain
+[] remove Templateable
+[] remove media lib pro (make custom extension)
+[] remove customer refs
+[] check trait (templateable, notifiable & sendable )
+[] check hasExtraDAta attributes & map To db
+
+[] check livewire units
+[] set models in config
+[] create submissable form model like the org Notifiable
+[] set Livewire traits to implements
+
+[] set config etc. spatie/laravel-honeypot and other packages
+
+[] check // getDeliveryEmail & getAnswerKeys
+
+[] add or remove Flex layouts
+
+[] convert to formsubmit response
+
+[] remove nova restrictions per resource (authorizedToDelete etc.)
+[] make nova resources extendible
