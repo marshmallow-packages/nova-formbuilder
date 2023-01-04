@@ -44,14 +44,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
-        Schema::table(
-            'nova_formbuilder_questions',
-            function (Blueprint $table) {
-                $table->foreign('form_id')->references('id')->on('nova_formbuilder_forms');
-                $table->foreign('step_id')->references('id')->on('nova_formbuilder_steps');
-            }
-        );
     }
 
     /**

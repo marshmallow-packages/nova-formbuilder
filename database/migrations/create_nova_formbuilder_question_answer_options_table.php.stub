@@ -23,13 +23,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
-        Schema::table(
-            'nova_formbuilder_question_answer_options',
-            function (Blueprint $table) {
-                $table->foreign('question_id')->references('id')->on('nova_formbuilder_questions');
-            }
-        );
     }
 
     /**
