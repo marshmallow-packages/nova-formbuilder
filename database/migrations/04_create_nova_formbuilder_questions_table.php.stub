@@ -1,0 +1,63 @@
+<?php
+
+use Marshmallow\NovaFormbuilder\Models\Form;
+use Marshmallow\NovaFormbuilder\Models\Step;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateQuestionsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('nova_formbuilder_questions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Form::class);
+            $table->foreignIdFor(Step::class);
+            $table->string('name');
+            // $table->string('prefix')->nullable()->default(null);
+            $table->string('label')->default(null)->nullable();
+            $table->string('type')->default('text');
+            $table->string('placeholder');
+            $table->boolean('required')->default(1);
+            $table->string('width')->default('full');
+            // $table->string('autofocus')->nullable();
+            // $table->boolean('has_options')->default(0);
+            // $table->longtext('options')->nullable();
+            $table->text('validation_rules')->nullable();
+            $table->string('options_callback')->nullable()->default(null);
+            $table->string('field_map')->nullable();
+            // $table->text('css')->nullable();
+            $table->string('info')->nullable()->default(null);
+            $table->json('extra_data')->nullable()->default(null);
+            $table->integer('order')->default(0);
+            // $table->boolean('defer')->default(true);
+            $table->boolean('active')->default(true);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::table(
+            'nova_formbuilder_questions',
+            function (Blueprint $table) {
+                $table->foreign('form_id')->references('id')->on('nova_formbuilder_forms');
+                $table->foreign('step_id')->references('id')->on('nova_formbuilder_steps');
+            }
+        );
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('nova_formbuilder_questions');
+    }
+}
