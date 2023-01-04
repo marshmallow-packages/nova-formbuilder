@@ -60,8 +60,6 @@ class Step extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            // Number::make(__('Order'), 'step_number')->readonly(),
-            // ID::make()->sortable(),
             BelongsTo::make(__('Form'), 'form', Form::class)
                 ->withoutTrashed()
                 ->help(__('The form that this step belongs to')),
@@ -70,7 +68,6 @@ class Step extends Resource
             Text::make(__('Title'), 'title')->help(__('The title of this step (Displayed on the form)')),
             Text::make(__('Subtitle'), 'subtitle')->help(__('The subtitle of this step (Displayed on the form)'))->hideFromIndex(),
             Boolean::make(__('Active'), 'active')->default(true)->help(__('Is this step active?')),
-            // TinyMCE::make(__('Info'), 'info')->help(__('Extra information for this step (Only used for internal purposes)'))->hideFromIndex(),
             HasMany::make(__('Questions'), 'questions', Question::class),
         ];
     }

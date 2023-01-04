@@ -68,9 +68,6 @@ class Question extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            // Number::make(__('Order'), 'order')->readonly(),
-            // // ID::make()->sortable(),
-            // HasOneThrough::make(__('Form'), 'form', Form::class),
             BelongsTo::make(__('Form'), 'form', Form::class)
                 ->withoutTrashed()
                 ->help(__('The form that this question belongs to')),

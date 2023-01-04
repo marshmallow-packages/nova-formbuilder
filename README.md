@@ -60,7 +60,11 @@ Add it to NovaServiceProvider.php
 ```php
 MenuSection::make(__('Forms'), [
     MenuItem::resource(\Marshmallow\NovaFormbuilder\Nova\Form::class),
-])
+    MenuItem::resource(\Marshmallow\NovaFormbuilder\Nova\Step::class),
+    MenuItem::resource(\Marshmallow\NovaFormbuilder\Nova\Question::class),
+    MenuItem::resource(\Marshmallow\NovaFormbuilder\Nova\QuestionAnswer::class),
+    MenuItem::resource(\Marshmallow\NovaFormbuilder\Nova\QuestionAnswerOption::class),
+])->icon('clipboard-list')->collapsable(),
 ```
 
 ## Usage

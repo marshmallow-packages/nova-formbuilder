@@ -35,7 +35,6 @@ class Question extends Model implements Sortable
     // protected $with = ['step', 'form', 'question_answer_options'];
 
     public $sortable = [
-        'order_column_name' => 'order',
         'sort_when_creating' => true,
         'sort_on_has_many' => true,
     ];

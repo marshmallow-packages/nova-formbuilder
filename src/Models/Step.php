@@ -46,6 +46,6 @@ class Step extends Model implements Sortable
 
     public function questions()
     {
-        return $this->hasMany(Question::class)->active()->orderBy('order');
+        return $this->hasMany(Question::class)->active()->ordered();
     }
 }

@@ -41,6 +41,7 @@ return new class extends Migration
             $table->mediumInteger('digit_min')->nullable()->default(null);
             $table->mediumInteger('digit_max')->nullable()->default(null);
             $table->boolean('active')->default(true);
+            $table->integer('order_column');
             $table->timestamps();
             $table->softDeletes();
         });

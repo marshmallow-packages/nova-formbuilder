@@ -79,7 +79,7 @@ class Step extends Component
         }
 
         if (is_array($questions)) {
-            $this->questions = $form->questions->where('step', $this->stepNumber)->sortBy('order');
+            $this->questions = $form->questions->where('step', $this->stepNumber)->sortBy('order_column');
         } else {
             $this->questions = $questions;
         }

@@ -41,7 +41,7 @@ class Form extends Model
 
     public function questions()
     {
-        return $this->hasMany(Question::class)->active()->orderBy('order');
+        return $this->hasMany(Question::class)->active()->ordered();
     }
 
     public function steps()
