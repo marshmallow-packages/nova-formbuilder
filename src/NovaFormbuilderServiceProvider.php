@@ -2,15 +2,16 @@
 
 namespace Marshmallow\NovaFormbuilder;
 
+use Laravel\Nova\Nova;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelPackageTools\Package;
 use Illuminate\View\Compilers\BladeCompiler;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Marshmallow\NovaFormbuilder\Http\Livewire\Form;
 use Marshmallow\NovaFormbuilder\Http\Livewire\Step;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 
 class NovaFormbuilderServiceProvider extends PackageServiceProvider
 {
@@ -49,6 +50,16 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
 
 
         $this->configureComponents();
+
+        if (class_exists(\Laravel\Nova\Nova::class)) {
+            Nova::resources([
+                \Marshmallow\NovaFormbuilder\Nova\Form::class,
+                \Marshmallow\NovaFormbuilder\Nova\Step::class,
+                \Marshmallow\NovaFormbuilder\Nova\Question::class,
+                \Marshmallow\NovaFormbuilder\Nova\QuestionAnswer::class,
+                \Marshmallow\NovaFormbuilder\Nova\QuestionAnswerOption::class,
+            ]);
+        }
     }
 
 
