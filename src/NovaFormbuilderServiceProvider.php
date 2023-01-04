@@ -81,6 +81,10 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
 
             $this->registerComponent('buttons.button');
 
+            $this->registerComponent('sections.header');
+            $this->registerComponent('sections.title');
+            $this->registerComponent('sections.question');
+
             $this->registerComponent('labels.label');
             $this->registerComponent('labels.tooltip-label');
             $this->registerComponent('labels.tooltip');
