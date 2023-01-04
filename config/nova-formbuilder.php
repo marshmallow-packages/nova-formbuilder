@@ -25,4 +25,6 @@ return [
 
     // This is the prefix for the session key per form
     'session_key_prefix' => 'mm_form_submission_',
+
+    'spatie_media_library_pro' => false,
 ];
