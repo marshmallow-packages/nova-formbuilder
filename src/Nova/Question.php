@@ -175,7 +175,7 @@ class Question extends Resource
     protected function extraFields()
     {
         return [
-            Multiselect::make(__('Validation Rules'), 'validation_rules_set')
+            Multiselect::make(__('Validation Rules'), 'validation_rules')
                 ->hideFromIndex()
                 ->options($this->resource->field_validation_rules)
                 ->saveAsJSON()
@@ -222,14 +222,6 @@ class Question extends Resource
                         $field->show()->rules('required');
                     }
                 })->help(__('The steps value of this question')),
-
-            Text::make(__('Custom Validation Rule'), 'custom_validation_rule')
-                ->hideFromIndex()
-                ->help(__('The custom validation rules of this question')),
-
-            Text::make(__('Validation Rules'), 'validation_rules')
-                ->readonly()->hideFromIndex()
-                ->help(__('The validation rules of this question')),
 
             Select::make(__('Depends on question'), 'depends_on_question')->hideFromIndex()->hide()->nullable()->dependsOn(
                 ['form'],

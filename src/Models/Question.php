@@ -15,7 +15,6 @@ use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Marshmallow\Nova\Flexible\Concerns\HasFlexible;
 use Marshmallow\NovaFormbuilder\Models\QuestionAnswer;
 use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
-use Marshmallow\NovaFormbuilder\Models\Traits\HasExtraData;
 use Marshmallow\NovaFormbuilder\Models\QuestionAnswerOption;
 
 class Question extends Model implements Sortable
@@ -23,7 +22,6 @@ class Question extends Model implements Sortable
     use SoftDeletes;
     use SortableTrait;
     use HasFlexible;
-    use HasExtraData;
 
     use CascadeSoftDeletes;
 
@@ -48,7 +46,6 @@ class Question extends Model implements Sortable
     ];
 
     protected $casts = [
-        'extra_data' => 'array',
         'field_map' => QuestionFieldMap::class,
     ];
 
@@ -154,46 +151,15 @@ class Question extends Model implements Sortable
     {
         $method = $this->options_callback;
         if (method_exists($this, $method)) {
-            $is_search = $this->form->id == 3;
-            $check_column = $is_search ? 'available_for_search' : 'available_for_home';
-            return $this->{$method}($is_search, $check_column);
+            return $this->{$method};
         }
+
         return [];
     }
 
     public function getQuestionOptionsAttribute()
     {
         return $this->getOptionsArray();
-    }
-
-    public function getInfoTooltipAttribute()
-    {
-        return $this->getExtraDataCast('info_tooltip');
-    }
-
-    public function setInfoTooltipAttribute($value)
-    {
-        return $this->setExtraDataCast('info_tooltip', $value);
-    }
-
-    public function getPrefixAttribute()
-    {
-        return $this->getExtraDataCast('prefix');
-    }
-
-    public function setPrefixAttribute($value)
-    {
-        return $this->setExtraDataCast('prefix', $value);
-    }
-
-    public function getSuffixAttribute()
-    {
-        return $this->getExtraDataCast('suffix');
-    }
-
-    public function setSuffixAttribute($value)
-    {
-        return $this->setExtraDataCast('suffix', $value);
     }
 
     public function getAllValidationRulesAttribute()
@@ -215,20 +181,12 @@ class Question extends Model implements Sortable
             }
         }
 
-        if ($this->validation_rules_set) {
-            $all_rules[] = $this->validation_rules_set;
+        if ($this->validation_rules) {
+            $all_rules[] = $this->validation_rules;
         }
 
         $digit_min = $this->digit_min;
         $digit_max = $this->digit_max;
-
-        $custom_rules = $this->custom_validation_rule;
-        if ($custom_rules) {
-            if (Str::contains($custom_rules, '|')) {
-                $custom_rules = explode('|', $custom_rules);
-            }
-            $all_rules[] = Arr::wrap($custom_rules);
-        }
 
         if ($this->type == 'range' || $this->type == 'number') {
             if ($digit_min) {
@@ -245,73 +203,6 @@ class Question extends Model implements Sortable
         return $rules;
     }
 
-    public function getValidationRulesSetAttribute()
-    {
-        return $this->getExtraDataCast('validation_rules_set');
-    }
-
-    public function setValidationRulesSetAttribute($value)
-    {
-        return $this->setExtraDataCast('validation_rules_set', $value);
-    }
-
-    public function getCustomValidationRuleAttribute()
-    {
-        return $this->getExtraDataCast('custom_validation_rule');
-    }
-
-    public function setCustomValidationRuleAttribute($value)
-    {
-        return $this->setExtraDataCast('custom_validation_rule', $value);
-    }
-
-    public function getDigitMaxAttribute()
-    {
-        return $this->getExtraDataCast('digit_max');
-    }
-
-    public function setDigitMaxAttribute($value)
-    {
-        return $this->setExtraDataCast('digit_max', $value);
-    }
-
-    public function getDigitMinAttribute()
-    {
-        return $this->getExtraDataCast('digit_min');
-    }
-
-    public function setDigitMinAttribute($value)
-    {
-        return $this->setExtraDataCast('digit_min', $value);
-    }
-
-
-    public function getDigitStepAttribute()
-    {
-        return $this->getExtraDataCast('digit_step');
-    }
-
-    public function setDigitStepAttribute($value)
-    {
-        return $this->setExtraDataCast('digit_step', $value);
-    }
-
-    /**
-     * TEST for the depends on question
-     */
-    public function getIsDependendAttribute()
-    {
-        return $this->getExtraDataCast('is_dependend') ?? false;
-    }
-    public function setIsDependendAttribute($value)
-    {
-        return $this->setExtraDataCast('is_dependend', $value);
-    }
-    public function getDependsOnQuestionAttribute()
-    {
-        return $this->getExtraDataCast('depends_on_question');
-    }
-
     public function setDependsOnQuestionAttribute($value)
     {
         if (filled($value) && $value != 'none') {
@@ -325,43 +216,16 @@ class Question extends Model implements Sortable
             $this->depends_on_answer = null;
         }
 
-        return $this->setExtraDataCast('depends_on_question', $value);
-    }
-    public function getDependsOnAnswerAttribute()
-    {
-        return $this->getExtraDataCast('depends_on_answer');
-    }
-    public function setDependsOnAnswerAttribute($value)
-    {
-        return $this->setExtraDataCast('depends_on_answer', $value);
+        return $this->depends_on_question = $value;
     }
 
-    public function getAutocompleteAttribute()
+    public function getAutocompleteAttribute($value)
     {
-        $value = $this->getExtraDataCast('autocomplete');
         if (!$value) {
-            $value = 'off';
+            return 'off';
         }
 
         return $value;
-    }
-
-    public function setAutocompleteAttribute($value)
-    {
-        if (!$value) {
-            $value = 'off';
-        }
-        return $this->setExtraDataCast('autocomplete', $value);
-    }
-
-    public function getPrefillWithAttribute()
-    {
-        return $this->getExtraDataCast('prefill_with');
-    }
-
-    public function setPrefillWithAttribute($value)
-    {
-        return $this->setExtraDataCast('prefill_with', $value);
     }
 
     public function getPrefillWithOptions()
@@ -428,28 +292,6 @@ class Question extends Model implements Sortable
     public function getInfo()
     {
         return strip_tags($this->info, ['a', 'br']);
-    }
-
-    public function setAttribute($key, $value)
-    {
-        if (Str::startsWith($key, 'mm_extra_')) {
-            return $this->storeExtraData($key, $value);
-        }
-
-        parent::setAttribute($key, $value);
-    }
-
-    public function getAttribute($key)
-    {
-        $attribute = parent::getAttribute($key);
-
-        if ($attribute !== null) {
-            return $attribute;
-        }
-
-        if (Str::startsWith($key, 'mm_extra_')) {
-            return $this->getExtraData($key);
-        }
     }
 
     public function getFieldValidationRulesAttribute()
