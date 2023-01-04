@@ -20,6 +20,8 @@ class FormSubmission extends Model implements HasMedia
     use HasUuid;
     use SoftDeletes;
 
+    protected $table = 'nova_formbuilder_form_submissions';
+
     protected $guarded = [];
 
     protected $casts = [

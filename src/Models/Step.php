@@ -17,6 +17,8 @@ class Step extends Model implements Sortable
     use SortableTrait;
     use CascadeSoftDeletes;
 
+    protected $table = 'nova_formbuilder_steps';
+
     protected $cascadeDeletes = ['questions'];
 
     protected $guarded = [];

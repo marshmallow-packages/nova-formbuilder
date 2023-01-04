@@ -19,6 +19,8 @@ class Form extends Model
     use HasExtraData;
     use CascadeSoftDeletes;
 
+    protected $table = 'nova_formbuilder_forms';
+
     protected $cascadeDeletes = ['steps'];
 
     protected $guarded = [];

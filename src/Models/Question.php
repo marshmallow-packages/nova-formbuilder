@@ -27,6 +27,8 @@ class Question extends Model implements Sortable
 
     use CascadeSoftDeletes;
 
+    protected $table = 'nova_formbuilder_questions';
+
     protected $cascadeDeletes = ['question_answer_options'];
 
     protected $guarded = [];

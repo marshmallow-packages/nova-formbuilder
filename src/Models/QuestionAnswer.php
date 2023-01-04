@@ -12,6 +12,8 @@ class QuestionAnswer extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'nova_formbuilder_question_answers';
+
     protected $guarded = [];
 
     protected $casts = [

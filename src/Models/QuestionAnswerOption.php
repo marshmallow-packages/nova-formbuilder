@@ -14,6 +14,8 @@ class QuestionAnswerOption extends Model implements Sortable
     use SoftDeletes;
     use SortableTrait;
 
+    protected $table = 'nova_formbuilder_question_answer_options';
+
     protected $guarded = [];
 
     public $sortable = [
