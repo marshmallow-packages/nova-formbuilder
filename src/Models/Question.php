@@ -283,11 +283,6 @@ class Question extends Model implements Sortable
         $builder->where('active', 1);
     }
 
-    public function scopeOrdered(Builder $builder)
-    {
-        $builder->where('order_column', 'asc');
-    }
-
     public function getInfo()
     {
         return strip_tags($this->info, ['a', 'br']);
