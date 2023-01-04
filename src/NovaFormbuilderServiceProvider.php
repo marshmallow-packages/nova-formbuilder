@@ -32,15 +32,16 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
                 'create_nova_formbuilder_questions_table',
                 'create_nova_formbuilder_question_answers_table',
                 'create_nova_formbuilder_question_answer_options_table',
-            ])->hasInstallCommand(function (InstallCommand $command) {
+            ])
+            ->runsMigrations()
+            ->hasInstallCommand(function (InstallCommand $command) {
                 $command->startWith(function (InstallCommand $command) {
                     $command->info('Hello, and welcome to the greatest Nova Form Builder package!');
                 })
                     ->publishConfigFile()
                     ->publishMigrations()
                     ->askToRunMigrations()
-                    ->copyAndRegisterServiceProviderInApp()
-                    ->askToStarRepoOnGitHub('marshmallow-package/nova-formbuilder')
+                    ->askToStarRepoOnGitHub('marshmallow-packages/nova-formbuilder')
                     ->endWith(function (InstallCommand $command) {
                         $command->info('Have an awesome day!');
                     });
