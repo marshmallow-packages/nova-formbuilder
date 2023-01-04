@@ -16,18 +16,11 @@ return new class extends Migration
         Schema::create('nova_formbuilder_forms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            // $table->string('view_name')->nullable();
-            // $table->string('route')->nullable();
             $table->string('width')->default('full');
-            // $table->text('css')->nullable();
             $table->string('on_cancel')->nullable();
             $table->string('on_submit')->nullable();
             $table->string('submit_event')->nullable();
-            // $table->boolean('save_on_next')->default(true);
-            $table->json('extra_data')->nullable()->default(null);
             $table->json('layout')->nullable();
-            // $table->text('thanks_title')->nullable();
-            // $table->mediumText('thanks_text')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
