@@ -285,7 +285,7 @@ class Question extends Model implements Sortable
 
     public function scopeOrdered(Builder $builder)
     {
-        $builder->where('order', 'asc');
+        $builder->where('order_column', 'asc');
     }
 
     public function getInfo()
