@@ -2,12 +2,15 @@
 
 namespace Marshmallow\NovaFormbuilder;
 
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
+use Livewire\Livewire;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Spatie\LaravelPackageTools\Package;
 use Illuminate\View\Compilers\BladeCompiler;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
+use Marshmallow\NovaFormbuilder\Http\Livewire\Forms\Form;
+use Marshmallow\NovaFormbuilder\Http\Livewire\Forms\Step;
 
 class NovaFormbuilderServiceProvider extends PackageServiceProvider
 {
@@ -77,6 +80,9 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
             $this->registerComponent('questions.select');
             $this->registerComponent('questions.textarea');
         });
+
+        Livewire::component('mm-forms-form', Form::class);
+        Livewire::component('mm-forms-step', Step::class);
     }
 
     /**

@@ -11,6 +11,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.forms.form');
+        return view('livewire.form');
     }
 }

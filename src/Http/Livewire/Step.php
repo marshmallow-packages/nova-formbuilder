@@ -156,7 +156,7 @@ class Step extends Component
     public function render()
     {
         $this->showDepends();
-        return view('livewire.forms.step');
+        return view('livewire.step');
     }
 
     public function showDepends()
