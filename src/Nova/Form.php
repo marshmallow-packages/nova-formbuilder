@@ -4,18 +4,24 @@ namespace Marshmallow\NovaFormbuilder\Nova;
 
 
 use Laravel\Nova\Panel;
-use Laravel\Nova\Resource as NovaResource;
+use Laravel\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Heading;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphMany;
-use App\Nova\Sendable\Templateable;
+use Marshmallow\Nova\TinyMCE\TinyMCE;
 use Marshmallow\Nova\Flexible\Flexible;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Form extends NovaResource
+class Form extends Resource
 {
     public static $clickAction = 'detail';
     /**
@@ -63,8 +69,6 @@ class Form extends NovaResource
             ]))->collapsable(),
 
             (new Panel(__('Extra Fields'), $this->extraFields()))->collapsable(),
-
-            MorphMany::make(__('Templateable'), 'templateable', Templateable::class),
         ];
     }
 

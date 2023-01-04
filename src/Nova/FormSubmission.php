@@ -22,12 +22,10 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
 use Marshmallow\Nova\TinyMCE\TinyMCE;
+use Laravel\Nova\Fields\BelongsToMany;
 use Outl1ne\MultiselectField\Multiselect;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Marshmallow\NovaFormbuilder\Nova\Notifiable;
-use Marshmallow\NovaFormbuilder\Nova\Statusable;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
-use Marshmallow\NovaSortable\Traits\HasSortableRows;
 
 
 class FormSubmission extends Resource
@@ -55,6 +53,16 @@ class FormSubmission extends Resource
         'id', 'title'
     ];
 
+    public static function label()
+    {
+        return __('Form Leads');
+    }
+
+    public static function singularLabel()
+    {
+        return __('Form Lead');
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -65,19 +73,17 @@ class FormSubmission extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make(__('Form'), 'form', Form::class)->hideCreateRelationButton()->withoutTrashed()->readonly(),
-            MorphTo::make(__('Formable'), 'formable'),
-            Text::make(__('Title'), 'title')->readonly(),
+            BelongsTo::make(__('Domain'), 'domain', Domain::class)->hideCreateRelationButton()->withoutTrashed()->readonly()->sortable(),
+            BelongsTo::make(__('Form'), 'form', Form::class)->hideCreateRelationButton()->withoutTrashed()->readonly()->sortable(),
+            MorphTo::make(__('Formable'), 'formable')->sortable(),
+            Text::make(__('Title'), 'title')->readonly()->sortable(),
             TextArea::make(__('Description'), 'description')->readonly()->hideFromIndex(),
-            Boolean::make(__('Submitted'), 'submitted')->readonly(),
-            DateTime::make(__('Submitted At'), 'submitted_at')->readonly(),
+            Boolean::make(__('Submitted'), 'submitted')->readonly()->sortable(),
+            DateTime::make(__('Submitted At'), 'submitted_at')->readonly()->sortable(),
 
             (new Panel('Media', $this->mediaFields()))->collapsable(),
 
             HasMany::make(__('Question Answers'), 'question_answers', QuestionAnswer::class)->readonly(),
-
-            MorphMany::make(__('Notifications'), 'notifiable', Notifiable::class),
-            MorphMany::make(__('Status'), 'statusable', Statusable::class),
         ];
     }
 
@@ -88,6 +94,8 @@ class FormSubmission extends Resource
             Boolean::make(__('Has Images'), function ($model) {
                 return $model->hasImages();
             })->readonly(),
+            Images::make(__('Image'), 'form_image')->readonly()->hideFromIndex(),
+            Images::make(__('Images'), 'form_images')->readonly()->hideFromIndex(),
         ];
     }
 
@@ -136,6 +144,21 @@ class FormSubmission extends Resource
     }
 
     public static function authorizedToCreate(Request $request)
+    {
+        return false;
+    }
+
+    // public function authorizedToDelete(Request $request)
+    // {
+    //     return false;
+    // }
+
+    public function authorizedToUpdate(Request $request)
+    {
+        return false;
+    }
+
+    public function authorizedToReplicate(Request $request)
     {
         return false;
     }

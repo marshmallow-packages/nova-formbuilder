@@ -26,6 +26,8 @@ use Marshmallow\Nova\Flexible\Flexible;
 use Outl1ne\MultiselectField\Multiselect;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Marshmallow\NovaSortable\Traits\HasSortableRows;
+use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
+use Marshmallow\NovaFormbuilder\Nova\Layouts\QuestionOptionLayout;
 use Marshmallow\NovaFormbuilder\Nova\Resolvers\QuestionOptionResolver;
 
 class Question extends Resource
@@ -98,6 +100,11 @@ class Question extends Resource
                 ->rules('required')->displayUsingLabels()
                 ->help(__('The type of this field')),
 
+            Select::make(__('Map to field'), 'field_map')->options(
+                QuestionFieldMap::allOptionsAsArray()
+            )->displayUsingLabels()
+                ->help(__('Map this field for the form to a customer field')),
+
             Text::make(__('Prefix'), 'prefix')->hideFromIndex()->hide()->dependsOn(
                 ['type'],
                 function (Text $field, NovaRequest $request, FormData $formData) {
@@ -139,11 +146,15 @@ class Question extends Resource
             ]))->collapsable(),
 
             Flexible::make(__('Question Options'), 'question_options_layout')
-                ->addLayout(__('Question Option'), 'question_option', [
-                    Text::make(__('Key'), 'key')->readonly(),
-                    Text::make(__('Value'), 'value'),
-                ])->confirmRemove()->collapsed()->fullWidth(false)->button('Add Option')->resolver(QuestionOptionResolver::class)->onlyOnForms()
-                ->hide()->dependsOn(
+                ->addLayout(QuestionOptionLayout::class)
+                ->resolver(QuestionOptionResolver::class)
+                ->confirmRemove()
+                ->collapsed()
+                ->fullWidth(false)
+                ->onlyOnForms()
+                ->hide()
+                ->help(__('The options of this question on the website (required if the question has options)'))
+                ->dependsOn(
                     ['type'],
                     function (Flexible $field, NovaRequest $request, FormData $formData) {
                         if (
@@ -152,7 +163,8 @@ class Question extends Resource
                             $field->show()->rules('required');
                         }
                     }
-                )->help(__('The options of this question on the website (required if the question has options)')),
+                ),
+
 
             HasMany::make(__('Answer Options'), 'question_answer_options', QuestionAnswerOption::class),
 

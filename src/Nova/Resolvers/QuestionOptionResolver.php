@@ -12,7 +12,7 @@ class QuestionOptionResolver implements ResolverInterface
      *
      * @param  mixed  $resource
      * @param  string $attribute
-     * @param  Marshmallow\Nova\Flexible\Layouts\Collection $layouts
+     * @param  Whitecube\NovaFlexibleContent\Layouts\Collection $layouts
      * @return Illuminate\Support\Collection
      */
     public function get($resource, $attribute, $layouts)
