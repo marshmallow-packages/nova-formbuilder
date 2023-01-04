@@ -4,7 +4,6 @@ namespace Marshmallow\NovaFormbuilder;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Marshmallow\NovaFormbuilder\Commands\NovaFormbuilderCommand;
 
 class NovaFormbuilderServiceProvider extends PackageServiceProvider
 {
@@ -19,7 +18,6 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
             ->name('nova-formbuilder')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_nova-formbuilder_table')
-            ->hasCommand(NovaFormbuilderCommand::class);
+            ->hasMigration('create_nova-formbuilder_table');
     }
 }
