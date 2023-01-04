@@ -3,12 +3,12 @@
 namespace Marshmallow\NovaFormbuilder\Http\Controllers\Forms;
 
 use App\Models\User;
-use App\Models\Forms\Step;
+use Marshmallow\NovaFormbuilder\Models\Step;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Forms\FormSubmission;
+use Marshmallow\NovaFormbuilder\Models\FormSubmission;
 
 class FormSubmissionController extends Controller
 {
@@ -29,11 +29,7 @@ class FormSubmissionController extends Controller
             $data = self::createFormSubmissionData($input);
         }
 
-        if (!$model && auth()->user()) {
-            $model = auth()->user();
-        } elseif (!$model) {
-            $model = new FormSubmission();
-        }
+        $model = new FormSubmission();
 
         $morphClass = $model->getMorphClass();
         $form_id = $step->form_id;
