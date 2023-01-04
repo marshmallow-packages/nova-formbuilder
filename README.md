@@ -55,6 +55,14 @@ Optionally, you can publish the views using
 php artisan vendor:publish --tag="nova-formbuilder-views"
 ```
 
+Add it to NovaServiceProvider.php
+
+```php
+MenuSection::make(__('Forms'), [
+    MenuItem::resource(\Marshmallow\NovaFormbuilder\Nova\Form::class),
+])
+```
+
 ## Usage
 
 ```php
