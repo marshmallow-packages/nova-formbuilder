@@ -9,8 +9,8 @@ use Spatie\LaravelPackageTools\Package;
 use Illuminate\View\Compilers\BladeCompiler;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
-use Marshmallow\NovaFormbuilder\Http\Livewire\Forms\Form;
-use Marshmallow\NovaFormbuilder\Http\Livewire\Forms\Step;
+use Marshmallow\NovaFormbuilder\Http\Livewire\Form;
+use Marshmallow\NovaFormbuilder\Http\Livewire\Step;
 
 class NovaFormbuilderServiceProvider extends PackageServiceProvider
 {
