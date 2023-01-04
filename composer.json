@@ -76,10 +76,7 @@
         "laravel": {
             "providers": [
                 "Marshmallow\\NovaFormbuilder\\NovaFormbuilderServiceProvider"
-            ],
-            "aliases": {
-                "NovaFormbuilder": "Marshmallow\\NovaFormbuilder\\Facades\\NovaFormbuilder"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",
