@@ -1,6 +1,6 @@
 <?php
 
-namespace Marshmallow\NovaFormbuilder\Http\Livewire\Forms;
+namespace Marshmallow\NovaFormbuilder\Http\Livewire;
 
 use App\Models\User;
 use Livewire\Component;
