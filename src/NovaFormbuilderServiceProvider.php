@@ -33,6 +33,7 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
                 'create_nova_formbuilder_question_answers_table',
                 'create_nova_formbuilder_question_answer_options_table',
             ])
+            ->runsMigrations()
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command->startWith(function (InstallCommand $command) {
                     $command->info('Hello, and welcome to the greatest Nova Form Builder package!');

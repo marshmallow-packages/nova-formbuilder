@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('nova_formbuilder_question_answer_options', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_column')->after('id');
+            $table->integer('order_column');
             $table->foreignIdFor(Question::class);
             $table->string('key');
             $table->string('value');
