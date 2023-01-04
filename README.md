@@ -84,11 +84,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
 ## TODO
-[] remove Domain
-[] remove Templateable
+
 [] remove media lib pro (make custom extension)
-[] remove customer refs
-[] check trait (templateable, notifiable & sendable )
 [] check hasExtraDAta attributes & map To db
 
 [] check livewire units
@@ -97,8 +94,6 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [] set Livewire traits to implements
 
 [] set config etc. spatie/laravel-honeypot and other packages
-
-[] check // getDeliveryEmail & getAnswerKeys
 
 [] add or remove Flex layouts
 

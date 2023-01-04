@@ -73,7 +73,6 @@ class FormSubmission extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make(__('Domain'), 'domain', Domain::class)->hideCreateRelationButton()->withoutTrashed()->readonly()->sortable(),
             BelongsTo::make(__('Form'), 'form', Form::class)->hideCreateRelationButton()->withoutTrashed()->readonly()->sortable(),
             MorphTo::make(__('Formable'), 'formable')->sortable(),
             Text::make(__('Title'), 'title')->readonly()->sortable(),
