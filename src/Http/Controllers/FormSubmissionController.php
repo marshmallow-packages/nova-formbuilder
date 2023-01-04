@@ -1,6 +1,6 @@
 <?php
 
-namespace Marshmallow\NovaFormbuilder\Http\Controllers\Forms;
+namespace Marshmallow\NovaFormbuilder\Http\Controllers;
 
 use App\Models\User;
 use Marshmallow\NovaFormbuilder\Models\Step;
@@ -16,7 +16,7 @@ class FormSubmissionController extends Controller
      * Validate and create a newly created Form Submission.
      *
      * @param  array  $input
-     * @return \App\Models\Forms\FormSubmission
+     * @return \Marshmallow\NovaFormbuilder\Models\FormSubmission
      */
     public static function create($model, array $input, Step $step)
     {
