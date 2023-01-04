@@ -77,7 +77,7 @@ trait WithForm
             $this->full_width = true;
         }
 
-        $this->session_key = "form_submission_{$this->form_id}";
+        $this->session_key = config('nova-formbuilder.session_key_prefix') . $this->form_id;
         if (session()->has($this->session_key)) {
             $this->session_value = session($this->session_key);
             $form_submission = FormSubmission::where('uuid', $this->session_value)->first();

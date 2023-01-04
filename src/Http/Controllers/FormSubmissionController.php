@@ -46,7 +46,7 @@ class FormSubmissionController extends Controller
             $form_submission->updateAnswerData($data['answers'], $step);
         }
 
-        $session_key = "form_submission_{$form_id}";
+        $session_key = config('nova-formbuilder.session_key_prefix') . $form_id;
         $session_value = $form_submission->uuid;
         request()->session()->put($session_key, $session_value);
 

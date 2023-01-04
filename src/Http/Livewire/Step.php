@@ -69,7 +69,7 @@ class Step extends Component
             $this->full_width = true;
         }
 
-        $this->session_key = "form_submission_{$form_id}";
+        $this->session_key = config('nova-formbuilder.session_key_prefix') . $form_id;
         if (!empty($form_submission_data)) {
             $this->setFormSubmissionData($form_submission_data);
         } elseif (session()->has($this->session_key)) {

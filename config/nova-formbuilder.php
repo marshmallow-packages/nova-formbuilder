@@ -23,4 +23,6 @@ return [
 
     'resolver' => Marshmallow\NovaFormbuilder\Nova\Resolvers\QuestionOptionResolver::class,
 
+    // This is the prefix for the session key per form
+    'session_key_prefix' => 'mm_form_submission_',
 ];
