@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
+use Marshmallow\Nova\Flexible\Casts\FlexibleCast;
 use Marshmallow\Nova\Flexible\Concerns\HasFlexible;
 
 class Form extends Model
 {
-    // use Notifiable;
     // use HasExtraData;
     use SoftDeletes;
     use HasFlexible;
@@ -70,10 +70,5 @@ class Form extends Model
         if (Str::startsWith($key, 'mm_extra_')) {
             return $this->getExtraData($key);
         }
-    }
-
-    public function templateable()
-    {
-        return $this->morphMany(Templateable::class, 'templateable');
     }
 }
