@@ -109,7 +109,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 ## TODO
 
-[] set configs & explanation for external packages like: spatie/laravel-honeypot & sortable
+[] set configs & explanation for external packages like: Livewire, Alpine, Spatie Media, laravel-honeypot & sortable
 [] remove media lib pro (make custom extension)
 [] Add translations
 [] add or remove Flex layouts ???

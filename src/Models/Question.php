@@ -4,6 +4,7 @@ namespace Marshmallow\NovaFormbuilder\Models;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\EloquentSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -190,7 +191,11 @@ class Question extends Model implements Sortable
         }
 
         if ($this->validation_rules_set && !empty($this->validation_rules_set)) {
-            $all_rules[] = $this->validation_rules_set;
+            if (!is_array($this->validation_rules_set)) {
+                $all_rules[] = Arr::wrap($this->validation_rules_set);
+            } else {
+                $all_rules[] = $this->validation_rules_set;
+            }
         }
 
         $digit_min = $this->digit_min;
@@ -206,7 +211,18 @@ class Question extends Model implements Sortable
             }
         }
 
-        $rules = array_flatten($all_rules);
+        $rule_set = array_flatten($all_rules);
+        if ($rule_set && filled($rule_set)) {
+            $rules = collect($rule_set)->map(function ($rule) {
+                if (Str::contains($rule, '|')) {
+                    $rule = explode('|', $rule);
+                }
+                return $rule;
+            })->flatten()->toArray();
+        } else {
+            $rules = [];
+        }
+
         return $rules;
     }
 
@@ -360,6 +376,38 @@ class Question extends Model implements Sortable
     public function getFieldTypesForSelectAttribute()
     {
         return array_collapse($this->field_types);
+    }
+
+    public function setCustomTypeAttribute($value)
+    {
+        if (filled($value)) {
+            $this->type = "custom.{$value}";
+        }
+    }
+
+    public function getCustomTypeAttribute()
+    {
+        if (Str::startsWith($this->type, 'custom.')) {
+            return Str::after($this->type, 'custom.');
+        }
+
+        return $this->type;
+    }
+
+    public function setQuestionTypeAttribute($value)
+    {
+        if (filled($value)) {
+            $this->type = $value;
+        }
+    }
+
+    public function getQuestionTypeAttribute()
+    {
+        if (Str::startsWith($this->type, 'custom.')) {
+            return Str::before($this->type, '.');
+        }
+
+        return $this->type;
     }
 
     public function isInputField()

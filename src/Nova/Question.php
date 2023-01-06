@@ -92,10 +92,20 @@ class Question extends Resource
             Boolean::make(__('Required'), 'required')
                 ->help(__('This questions needs to be filled in')),
 
-            Select::make(__('Type'), 'type')
+            Select::make(__('Type'), 'question_type')
                 ->options($this->resource->field_types_for_select)
                 ->rules('required')->displayUsingLabels()
                 ->help(__('The type of this field')),
+
+            Text::make(__('Custom Type'), 'custom_type')->hideFromIndex()->hide()
+                ->dependsOn(
+                    ['question_type'],
+                    function (Text $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->question_type == 'custom') {
+                            $field->show()->rules(['required']);
+                        }
+                    }
+                )->help(__('Custom type field')),
 
             Select::make(__('Map to field'), 'field_map')->options(
                 QuestionFieldMap::allOptionsAsArray()
@@ -103,18 +113,18 @@ class Question extends Resource
                 ->help(__('Map this field for the form to a user field')),
 
             Text::make(__('Prefix'), 'prefix')->hideFromIndex()->hide()->dependsOn(
-                ['type'],
+                ['question_type'],
                 function (Text $field, NovaRequest $request, FormData $formData) {
-                    if ($formData->type == 'input' || $formData->type == 'number') {
+                    if ($formData->question_type == 'input' || $formData->question_type == 'number') {
                         $field->show();
                     }
                 }
             )->help(__('Show this at the start in the field of the question')),
 
             Text::make(__('Suffix'), 'suffix')->hideFromIndex()->hide()->dependsOn(
-                ['type'],
+                ['question_type'],
                 function (Text $field, NovaRequest $request, FormData $formData) {
-                    if ($formData->type == 'input' || $formData->type == 'number') {
+                    if ($formData->question_type == 'input' || $formData->question_type == 'number') {
                         $field->show();
                     }
                 }
@@ -152,10 +162,10 @@ class Question extends Resource
                 ->hide()
                 ->help(__('The options of this question on the website (required if the question has options)'))
                 ->dependsOn(
-                    ['type'],
+                    ['question_type'],
                     function (Flexible $field, NovaRequest $request, FormData $formData) {
                         if (
-                            $formData->type == 'radio' || $formData->type == 'select' || $formData->type == 'checkbox'
+                            $formData->question_type == 'radio' || $formData->question_type == 'select' || $formData->question_type == 'checkbox'
                         ) {
                             $field->show()->rules('required');
                         }
@@ -196,8 +206,8 @@ class Question extends Resource
 
             Number::make(__('Min number'), 'digit_min')
                 ->hideFromIndex()->hide()->default(null)
-                ->dependsOn('type', function ($field, $request, $formData) {
-                    if ($formData->type == 'number' || $formData->type == 'range') {
+                ->dependsOn('question_type', function ($field, $request, $formData) {
+                    if ($formData->question_type == 'number' || $formData->question_type == 'range') {
                         $field->show()->rules('required');
                     } else {
                         $field->value = null;
@@ -206,8 +216,8 @@ class Question extends Resource
 
             Number::make(__('Max number'), 'digit_max')
                 ->hideFromIndex()->hide()
-                ->dependsOn('type', function ($field, $request, $formData) {
-                    if ($formData->type == 'number' || $formData->type == 'range') {
+                ->dependsOn('question_type', function ($field, $request, $formData) {
+                    if ($formData->question_type == 'number' || $formData->question_type == 'range') {
                         $field->show()->rules('required');
                     } else {
                         $field->value = null;
@@ -216,15 +226,20 @@ class Question extends Resource
 
             Number::make(__('Steps'), 'digit_step')
                 ->hideFromIndex()->hide()->default(null)
-                ->dependsOn('type', function ($field, $request, $formData) {
-                    if ($formData->type == 'range') {
+                ->dependsOn('question_type', function ($field, $request, $formData) {
+                    if ($formData->question_type == 'range') {
                         $field->show()->rules('required');
                     }
                 })->help(__('The steps value of this question')),
 
             Text::make(__('Validation Rules'), 'validation_rules')
-                ->readonly()->hideFromIndex()
-                ->help(__('The validation rules of this question')),
+                ->hideFromIndex()->dependsOn('question_type', function ($field, $request, $formData) {
+                    if ($formData->question_type == 'custom') {
+                        $field->show();
+                    } else {
+                        $field->readonly();
+                    }
+                })->help(__('The validation rules of this question, seperated with "|"')),
 
             Select::make(__('Depends on question'), 'depends_on_questions')
                 ->hideFromIndex()->hide()->nullable()->dependsOn(
