@@ -84,7 +84,9 @@ trait WithSteps
 
     public function submitStep(): void
     {
-        ray("Submit Step {$this->stepNumber} - Submit Data", $this->state)->blue();
+        if (config('nova-formbuilder.debug_forms')) {
+            ray("Submit Step {$this->stepNumber} - Submit Data", $this->state)->blue();
+        }
 
         $this->resetErrorBag();
 

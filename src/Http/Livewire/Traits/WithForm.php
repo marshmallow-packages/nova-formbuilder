@@ -129,7 +129,9 @@ trait WithForm
      */
     public function submitMain()
     {
-        ray('Main Submit - Complete')->green();
+        if (config('nova-formbuilder.debug_forms')) {
+            ray('Main Submit - Complete')->green();
+        }
 
         $on_submit = $this->form['on_submit'];
 
@@ -199,8 +201,9 @@ trait WithForm
             $this->nextStep();
             return;
         }
-
-        ray("Submit On Main: Step {$stepNumber} - Complete", $data)->orange();
+        if (config('nova-formbuilder.debug_forms')ilder.debug_forms')ilder.debug_forms')) {
+            ray("Submit On Main: Step {$stepNumber} - Complete", $data)->orange();
+        }
 
         if ($stepNumber == $this->lastStep) {
             if (!$this->form_submission_id) {
@@ -214,7 +217,9 @@ trait WithForm
             $this->form_submission_id = $form_submission->id;
         } else {
             $this->updateFormSubmission($data);
-            ray('Main Submit - Step Data', $data);
+            if (config('nova-formbuilder.debug_forms')) {
+                ray('Main Submit - Step Data', $data);
+            }
         }
 
         $this->nextStep();

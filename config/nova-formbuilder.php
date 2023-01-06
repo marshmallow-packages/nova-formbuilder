@@ -27,4 +27,5 @@ return [
     'session_key_prefix' => 'mm_form_submission_',
 
     'spatie_media_library_pro' => false,
+    'debug_forms' => env('APP_DEBUG', false)
 ];
