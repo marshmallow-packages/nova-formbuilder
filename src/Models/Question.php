@@ -349,6 +349,9 @@ class Question extends Model implements Sortable
                 'checkbox' => __('Checkbox'),
                 'select' => __('Select'),
             ],
+            'custom' => [
+                'custom' => __('Custom'),
+            ],
         ];
 
         return $question_types;
