@@ -120,6 +120,9 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [] add Tooltip alpineJs
 [] add all deps to readme (alpine, livewire etc.)
 
+[] Map to field -> nullable
+[] add default ->(null)
+
 // EXTRA
 [] create submissable form model like the org Notifiable
 [] convert to formsubmit response

@@ -20,8 +20,8 @@ return new class extends Migration
             $table->foreignIdFor(Form::class);
             $table->integer('formable_id')->nullable()->default(null);
             $table->string('formable_type')->nullable()->default(null);
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
+            $table->string('title')->nullable()->default(null);
+            $table->text('description')->nullable()->default(null);
             $table->boolean('submitted')->default(false);
             $table->dateTime('submitted_at')->nullable()->default(now());
             $table->timestamps();
