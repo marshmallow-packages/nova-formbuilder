@@ -21,8 +21,11 @@ class FormSubmissionEvent
     {
         $submit_event = $form_submission->form->submit_event;
 
-        match ($submit_event) {
-            default => event(new FormSubmissionMessage($form_submission)),
-        };
+        if (class_exists($submit_event)) {
+            $event = new $submit_event($form_submission);
+            return event($event);
+        }
+
+        return event(new FormSubmissionMessage($form_submission));
     }
 }

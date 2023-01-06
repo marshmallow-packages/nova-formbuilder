@@ -86,7 +86,7 @@ class Form extends Resource
 
             Text::make(__('Cancel Redirect'), 'on_cancel')->help(__('Link if the \'Cancel\' button is pressed'))->readonly()->hideFromIndex(),
             Text::make(__('Submit Redirect'), 'on_submit')->help(__('Link if the \'Submit\' button is pressed'))->readonly()->hideFromIndex(),
-            Text::make(__('Submit event'), 'submit_event')->help(__('Event that is fired when the \'Submit\' button is pressed'))->hideFromIndex(),
+            Text::make(__('Submit event class'), 'submit_event')->help(__('Event class that is, e.g. "\\App\\Events\\FormSub" '))->hideFromIndex(),
         ];
     }
 

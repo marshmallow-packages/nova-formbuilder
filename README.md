@@ -42,6 +42,12 @@ You can publish the config file with:
 php artisan vendor:publish --tag="nova-formbuilder-config"
 ```
 
+Add alpine & livewire & add this after loading scripts:
+
+```php
+@include('nova-formbuilder::alpine-tooltip')
+```
+
 This is the contents of the published config file:
 
 ```php
@@ -105,8 +111,9 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 [] set configs & explanation for external packages like: spatie/laravel-honeypot & sortable
 [] remove media lib pro (make custom extension)
+[] Add translations
 [] add or remove Flex layouts ???
-
+[] Add custom fields
 [] add JS & Css
 [] remove Ray calls (only in debug)
 [] add Tooltip alpineJs
