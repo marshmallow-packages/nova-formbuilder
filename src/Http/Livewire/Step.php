@@ -156,7 +156,7 @@ class Step extends Component
     public function render()
     {
         $this->showDepends();
-        return view('livewire.step');
+        return view('nova-formbuilder::livewire.step');
     }
 
     public function showDepends()

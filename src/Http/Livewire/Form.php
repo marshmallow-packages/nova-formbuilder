@@ -11,6 +11,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.form');
+        return view('nova-formbuilder::livewire.form');
     }
 }

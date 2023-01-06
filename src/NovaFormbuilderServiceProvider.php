@@ -64,6 +64,17 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
 
 
     /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function bootingPackage()
+    {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'marshmallow');
+        $this->configureComponents();
+    }
+
+    /**
      * Configure the Marshmallow Blade components.
      *
      * @return void
@@ -109,6 +120,6 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
      */
     protected function registerComponent(string $component)
     {
-        Blade::component('marshmallow::components.' . $component, 'mm-forms-' . $component);
+        Blade::component('nova-formbuilder::components.' . $component, 'mm-forms-' . $component);
     }
 }
