@@ -8,10 +8,10 @@
     }" x-cloak>
 
         @if (!$submitted)
-            <x-mm-forms-forms.header :stopLink="$form['on_cancel']" :fullWidth="$full_width" />
+            <x-mm-forms-sections.header :stopLink="$form['on_cancel']" :fullWidth="$full_width" />
         @endif
 
-        <x-mm-forms-forms.title-section :fullWidth="$full_width" sidebar="false">
+        <x-mm-forms-sections.title :fullWidth="$full_width" sidebar="false">
             <x-slot name="title">
                 {{ $formStepsArray[$currentStep]['title'] }}
             </x-slot>
@@ -21,7 +21,7 @@
             <x-slot name="description">
                 {{ $formStepsArray[$currentStep]['description'] }}
             </x-slot>
-        </x-mm-forms-forms.title-section>
+        </x-mm-forms-sections.title>
 
         @if ($submitted)
             <div class="relative col-span-12 px-2 pt-4 pb-8 md:px-6 ">

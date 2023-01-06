@@ -1,4 +1,4 @@
-<x-mm-forms-forms.question-section :sidebar="$sidebar ?? false" :fullWidth="$full_width" :stepNumber="$stepNumber"
+<x-mm-forms-sections.question :sidebar="$sidebar ?? false" :fullWidth="$full_width" :stepNumber="$stepNumber"
     has_autocomplete="{{ $has_autocomplete ?? false }}">
     <x-slot name="content">
         <div class="grid-cols-12 col-span-6 gap-6 space-y-6 md:space-y-3 md:gap-4 md:grid">
@@ -126,4 +126,4 @@
             @endforeach
         </div>
     </x-slot>
-</x-mm-forms-forms.question-section>
+</x-mm-forms-sections.question>
