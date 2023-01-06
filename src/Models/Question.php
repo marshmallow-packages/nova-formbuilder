@@ -46,6 +46,7 @@ class Question extends Model implements Sortable
 
     protected $casts = [
         'field_map' => QuestionFieldMap::class,
+        'validation_rules_set' => 'array',
     ];
 
     public static function boot()
@@ -180,7 +181,15 @@ class Question extends Model implements Sortable
             }
         }
 
-        if ($this->validation_rules_set) {
+        $custom_rules = $this->validation_rules;
+        if ($custom_rules) {
+            if (Str::contains($custom_rules, '|')) {
+                $custom_rules = explode('|', $custom_rules);
+            }
+            $all_rules[] = Arr::wrap($custom_rules);
+        }
+
+        if ($this->validation_rules_set && !empty($this->validation_rules_set)) {
             $all_rules[] = $this->validation_rules_set;
         }
 
@@ -198,7 +207,6 @@ class Question extends Model implements Sortable
         }
 
         $rules = array_flatten($all_rules);
-
         return $rules;
     }
 

@@ -53,6 +53,7 @@ Optionally, you can publish the views using
 
 ```bash
 php artisan vendor:publish --tag="nova-formbuilder-views"
+php artisan vendor:publish --provider="Marshmallow\NovaFormbuilder\FormComponentsServiceProvider" --tag="marshmallow-views"
 ```
 
 Add it to NovaServiceProvider.php
