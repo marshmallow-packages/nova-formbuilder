@@ -99,7 +99,7 @@ class Question extends Resource
 
             Select::make(__('Map to field'), 'field_map')->options(
                 QuestionFieldMap::allOptionsAsArray()
-            )->displayUsingLabels()
+            )->displayUsingLabels()->nullable()
                 ->help(__('Map this field for the form to a user field')),
 
             Text::make(__('Prefix'), 'prefix')->hideFromIndex()->hide()->dependsOn(
@@ -182,14 +182,16 @@ class Question extends Resource
                 ->hideFromIndex()
                 ->singleSelect()
                 ->options($this->resource->getAutocompleteOptions())
-                ->saveAsJSON()
+                // ->saveAsJSON()
+                ->nullable()
                 ->help(__('The autocomplete rules for this question')),
 
             Multiselect::make(__('Prefill with'), 'prefill_with')
                 ->hideFromIndex()
                 ->singleSelect()
                 ->options($this->resource->getPrefillWithOptions())
-                ->saveAsJSON()
+                // ->saveAsJSON()
+                ->nullable()
                 ->help(__('The prefill option for this question')),
 
             Number::make(__('Min number'), 'digit_min')
@@ -224,23 +226,24 @@ class Question extends Resource
                 ->readonly()->hideFromIndex()
                 ->help(__('The validation rules of this question')),
 
-            Select::make(__('Depends on question'), 'depends_on_question')->hideFromIndex()->hide()->nullable()->dependsOn(
-                ['form'],
-                function (Select $field, NovaRequest $request, FormData $formData) {
-                    if ($formData->form) {
-                        $form = \Marshmallow\NovaFormbuilder\Models\Form::find($formData->form);
-                        $questions = $form->questions->pluck('label', 'name')->toArray();
-                        $questions['none'] = __('None');
-                        $field->show()->options($questions);
+            Select::make(__('Depends on question'), 'depends_on_questions')
+                ->hideFromIndex()->hide()->nullable()->dependsOn(
+                    ['form'],
+                    function (Select $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->form) {
+                            $form = \Marshmallow\NovaFormbuilder\Models\Form::find($formData->form);
+                            $questions = $form->questions->pluck('label', 'name')->toArray();
+                            $questions['none'] = __('None');
+                            $field->show()->options($questions);
+                        }
                     }
-                }
-            )->help(__('The question that this question depends on')),
+                )->help(__('The question that this question depends on')),
 
             Select::make(__('Depends on answer'), 'depends_on_answer')->hideFromIndex()->nullable()->hide()->dependsOn(
-                ['depends_on_question'],
+                ['depends_on_questions'],
                 function (Select $field, NovaRequest $request, FormData $formData) {
-                    if ($formData->depends_on_question) {
-                        $question = \Marshmallow\NovaFormbuilder\Models\Question::whereName($formData->depends_on_question)->first();
+                    if ($formData->depends_on_questions) {
+                        $question = \Marshmallow\NovaFormbuilder\Models\Question::whereName($formData->depends_on_questions)->first();
                         if ($question) {
                             if ($question->has_options) {
 

@@ -210,7 +210,7 @@ class Question extends Model implements Sortable
         return $rules;
     }
 
-    public function setDependsOnQuestionAttribute($value)
+    public function setDependsOnQuestionsAttribute($value)
     {
         if (filled($value) && $value != 'none') {
             $this->is_dependend = true;
@@ -223,7 +223,13 @@ class Question extends Model implements Sortable
             $this->depends_on_answer = null;
         }
 
-        return $this->depends_on_question = $value;
+        $this->depends_on_question = $value;
+        return $this;
+    }
+
+    public function getDependsOnQuestionsAttribute()
+    {
+        return $this->depends_on_question;
     }
 
     public function getAutocompleteAttribute($value)
