@@ -32,7 +32,7 @@
         $placeholder .= '*';
     }
 
-    $class = 'border-gray-300 focus:border-primary-300 focus:ring  text-[0.9rem] focus:ring-primary-200 focus:ring-opacity-50 rounded-md shadow-sm w-full min-h-10 placeholder-white-600 bg-transparent border p-3  placeholder-text-md peer focus:outline-none  read-only:italic read-only:bg-gray-300/20 disabled:italic disabled:bg-gray-300/20';
+    $class = 'border-gray-300 focus:border-primary-300 focus:ring  text-[0.9rem] focus:ring-primary-200 focus:ring-opacity-50 rounded-md shadow-sm w-full min-h-10 placeholder-gray-400 text-gray-700 bg-transparent border p-3  placeholder-text-md peer focus:outline-none  read-only:italic read-only:bg-gray-300/20 disabled:italic disabled:bg-gray-300/20';
 
 @endphp
 

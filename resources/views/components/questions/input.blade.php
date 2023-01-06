@@ -126,5 +126,5 @@
             </div>
         @endif
     </div>
-    {{-- <x-mm-forms-error for="{{ $attributes['id'] }}" :icon="false" /> --}}
+    <x-mm-forms-error for="{{ $attributes['id'] }}" :icon="false" />
 </div>
