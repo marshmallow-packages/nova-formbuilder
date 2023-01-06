@@ -231,16 +231,31 @@ class FormSubmission extends Model implements HasMedia
     public function updateAnswerData($answer_data, Step $step)
     {
         $stepQuestions = $step->questions;
-
-        collect($answer_data)->each(function ($answer, $question_key) use ($stepQuestions) {
+        $answerData = $answer_data;
+        collect($answer_data)->each(function ($answer, $question_key) use ($stepQuestions, $answerData) {
             $question = $stepQuestions->where('name', $question_key)->first();
 
-            if (!$question || is_null($answer)) {
+            if (!$question || is_null($answer) || ($answer && !filled($answer))) {
                 return;
             }
 
             if (in_array($question_key, ['photo', 'photos'])) {
                 return;
+            }
+
+            if ($question->is_dependend && $question->depends_on_question) {
+                $dependsAnswer = Arr::get($answerData, $question->depends_on_question);
+                if (!$dependsAnswer || ($dependsAnswer && !filled($dependsAnswer))) {
+                    return;
+                }
+                if ($dependsAnswer && $question->depends_on_answer) {
+                    if (!is_array($dependsAnswer) && $dependsAnswer !== $question->depends_on_answer) {
+                        return;
+                    }
+                    if (is_array($dependsAnswer) && !Arr::has($dependsAnswer, $question->depends_on_answer)) {
+                        return;
+                    }
+                }
             }
 
             if (is_array($answer) && count($answer) > 0) {
