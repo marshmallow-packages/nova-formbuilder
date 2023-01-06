@@ -201,7 +201,7 @@ trait WithForm
             $this->nextStep();
             return;
         }
-        if (config('nova-formbuilder.debug_forms')ilder.debug_forms')ilder.debug_forms')) {
+        if (config('nova-formbuilder.debug_forms')) {
             ray("Submit On Main: Step {$stepNumber} - Complete", $data)->orange();
         }
 
