@@ -2,13 +2,9 @@
 
 namespace Marshmallow\NovaFormbuilder\Http\Controllers;
 
-use App\Models\User;
-use Marshmallow\NovaFormbuilder\Models\Step;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Marshmallow\NovaFormbuilder\Models\FormSubmission;
+use Marshmallow\NovaFormbuilder\Models\Step;
 
 class FormSubmissionController extends Controller
 {
@@ -34,19 +30,19 @@ class FormSubmissionController extends Controller
         $morphClass = $model->getMorphClass();
         $form_id = $step->form_id;
         $create_data = [
-            "form_id" => $form_id,
-            "formable_id" => $model->id,
-            "formable_type" => $morphClass,
-            "submitted" => false,
+            'form_id' => $form_id,
+            'formable_id' => $model->id,
+            'formable_type' => $morphClass,
+            'submitted' => false,
         ];
 
         $form_submission = FormSubmission::updateOrCreate($create_data, $data['model']);
 
-        if (!$dummy) {
+        if (! $dummy) {
             $form_submission->updateAnswerData($data['answers'], $step);
         }
 
-        $session_key = config('nova-formbuilder.session_key_prefix') . $form_id;
+        $session_key = config('nova-formbuilder.session_key_prefix').$form_id;
         $session_value = $form_submission->uuid;
         request()->session()->put($session_key, $session_value);
 
@@ -101,6 +97,7 @@ class FormSubmissionController extends Controller
             $array[$new_name] = $array[$old_name];
             unset($array[$old_name]);
         }
+
         return $array;
     }
 }

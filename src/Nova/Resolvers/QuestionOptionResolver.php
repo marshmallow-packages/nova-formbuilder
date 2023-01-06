@@ -11,8 +11,8 @@ class QuestionOptionResolver implements ResolverInterface
      * get the field's value
      *
      * @param  mixed  $resource
-     * @param  string $attribute
-     * @param  Whitecube\NovaFlexibleContent\Layouts\Collection $layouts
+     * @param  string  $attribute
+     * @param  Whitecube\NovaFlexibleContent\Layouts\Collection  $layouts
      * @return Illuminate\Support\Collection
      */
     public function get($resource, $attribute, $layouts)
@@ -22,11 +22,13 @@ class QuestionOptionResolver implements ResolverInterface
         $option_layouts = $options->map(function ($option) use ($layouts) {
             $layout = $layouts->find('question_option');
 
-            if (!$layout) return;
+            if (! $layout) {
+                return;
+            }
 
             return $layout->duplicateAndHydrate($option->id, [
                 'key' => $option->key,
-                'value' => $option->value
+                'value' => $option->value,
             ]);
         })->filter();
 
@@ -37,8 +39,8 @@ class QuestionOptionResolver implements ResolverInterface
      * Set the field's value
      *
      * @param  mixed  $model
-     * @param  string $attribute
-     * @param  Illuminate\Support\Collection $groups
+     * @param  string  $attribute
+     * @param  Illuminate\Support\Collection  $groups
      * @return void
      */
     public function set($model, $attribute, $groups)
@@ -56,11 +58,12 @@ class QuestionOptionResolver implements ResolverInterface
                     'question_id' => $model->id,
                     'key' => $attributes['key'],
                     'value' => $attributes['value'],
-                    'order_column' => $index
+                    'order_column' => $index,
                 ];
                 if ($option_model_id == $layout_key) {
                     $layout_option['id'] = null;
                 }
+
                 return $layout_option;
             });
 
@@ -72,7 +75,7 @@ class QuestionOptionResolver implements ResolverInterface
 
             // Delete all options that are not in the layout
             $options->each(function ($option) use ($layout_options_ids) {
-                if (!$layout_options_ids->contains($option->id)) {
+                if (! $layout_options_ids->contains($option->id)) {
                     $option->delete();
                 }
             });

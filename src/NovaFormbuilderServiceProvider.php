@@ -2,16 +2,15 @@
 
 namespace Marshmallow\NovaFormbuilder;
 
+use Illuminate\Support\Facades\Blade;
+use Illuminate\View\Compilers\BladeCompiler;
 use Laravel\Nova\Nova;
 use Livewire\Livewire;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\ServiceProvider;
-use Spatie\LaravelPackageTools\Package;
-use Illuminate\View\Compilers\BladeCompiler;
 use Marshmallow\NovaFormbuilder\Http\Livewire\Form;
 use Marshmallow\NovaFormbuilder\Http\Livewire\Step;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class NovaFormbuilderServiceProvider extends PackageServiceProvider
 {
@@ -48,7 +47,6 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
                     });
             });
 
-
         $this->configureComponents();
 
         if (class_exists(\Laravel\Nova\Nova::class)) {
@@ -62,7 +60,6 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
         }
     }
 
-
     /**
      * Bootstrap any application services.
      *
@@ -70,7 +67,7 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
      */
     public function bootingPackage()
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'marshmallow');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'marshmallow');
         $this->configureComponents();
     }
 
@@ -81,7 +78,6 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
      */
     protected function configureComponents()
     {
-
         $this->callAfterResolving(BladeCompiler::class, function () {
             /**
              * Form fields
@@ -120,6 +116,6 @@ class NovaFormbuilderServiceProvider extends PackageServiceProvider
      */
     protected function registerComponent(string $component)
     {
-        Blade::component('nova-formbuilder::components.' . $component, 'mm-forms-' . $component);
+        Blade::component('nova-formbuilder::components.'.$component, 'mm-forms-'.$component);
     }
 }

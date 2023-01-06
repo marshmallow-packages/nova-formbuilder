@@ -2,33 +2,24 @@
 
 namespace Marshmallow\NovaFormbuilder\Nova;
 
-use Laravel\Nova\Panel;
-use Laravel\Nova\Resource;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Field;
-use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\FormData;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Heading;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\FormData;
-use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
-use Marshmallow\Nova\TinyMCE\TinyMCE;
-use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\HasOneThrough;
-use Marshmallow\Nova\Flexible\Flexible;
-use Outl1ne\MultiselectField\Multiselect;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Marshmallow\NovaSortable\Traits\HasSortableRows;
+use Laravel\Nova\Panel;
+use Laravel\Nova\Resource;
+use Marshmallow\Nova\Flexible\Flexible;
+use Marshmallow\Nova\TinyMCE\TinyMCE;
 use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
 use Marshmallow\NovaFormbuilder\Nova\Layouts\QuestionOptionLayout;
 use Marshmallow\NovaFormbuilder\Nova\Resolvers\QuestionOptionResolver;
+use Marshmallow\NovaSortable\Traits\HasSortableRows;
+use Outl1ne\MultiselectField\Multiselect;
 
 class Question extends Resource
 {
@@ -56,7 +47,7 @@ class Question extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'placeholder'
+        'id', 'name', 'placeholder',
     ];
 
     /**
@@ -141,7 +132,6 @@ class Question extends Resource
                 ->default('full')
                 ->help(__('The width of this field on the website')),
 
-
             (new Panel(__('Help text'), [
                 TinyMCE::make(__('Info'), 'info')->hideFromIndex()
                     ->help(__('Extra help text for the question')),
@@ -172,10 +162,9 @@ class Question extends Resource
                     }
                 ),
 
-
             HasMany::make(__('Answer Options'), 'question_answer_options', QuestionAnswerOption::class),
 
-            (new Panel(__('Extra Fields'), $this->extraFields()))->collapsable()
+            (new Panel(__('Extra Fields'), $this->extraFields()))->collapsable(),
         ];
     }
 
@@ -261,7 +250,6 @@ class Question extends Resource
                         $question = \Marshmallow\NovaFormbuilder\Models\Question::whereName($formData->depends_on_questions)->first();
                         if ($question) {
                             if ($question->has_options) {
-
                                 $options = $question->getOptionsArray();
                                 $options['none'] = __('None');
                                 $field->show()->options($options);

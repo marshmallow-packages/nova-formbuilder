@@ -2,28 +2,22 @@
 
 namespace Marshmallow\NovaFormbuilder\Models;
 
+use Dyrynda\Database\Support\CascadeSoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Spatie\EloquentSortable\Sortable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\EloquentSortable\SortableTrait;
-use Marshmallow\NovaFormbuilder\Models\Form;
-use Marshmallow\NovaFormbuilder\Models\Step;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Marshmallow\Nova\Flexible\Concerns\HasFlexible;
-use Marshmallow\NovaFormbuilder\Models\QuestionAnswer;
 use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
-use Marshmallow\NovaFormbuilder\Models\QuestionAnswerOption;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
 class Question extends Model implements Sortable
 {
     use SoftDeletes;
     use SortableTrait;
     use HasFlexible;
-
     use CascadeSoftDeletes;
 
     protected $table = 'nova_formbuilder_questions';
@@ -55,7 +49,7 @@ class Question extends Model implements Sortable
         parent::boot();
 
         static::creating(function ($question) {
-            if (!$question->name) {
+            if (! $question->name) {
                 $question->name = $question->generateKey();
             }
         });
@@ -70,12 +64,12 @@ class Question extends Model implements Sortable
     public function generateKey()
     {
         $label = $this->label;
-        if (!$label) {
+        if (! $label) {
             $label = $this->placeholder;
         }
 
         $key = Str::of($label)->slug()->replace('-', '_')->toString();
-        $key_count = self::whereNot('id', $this->id)->where('name', 'like', "%" . $key . "%")->count();
+        $key_count = self::whereNot('id', $this->id)->where('name', 'like', '%'.$key.'%')->count();
         if ($key_count > 0) {
             $key = "{$key}_{$key_count}";
         }
@@ -173,9 +167,9 @@ class Question extends Model implements Sortable
                 $depends_on_answer = $this->depends_on_answer;
 
                 if ($depends_on_answer) {
-                    $all_rules[] = 'required_if:' . $depends_question  . ',==,' . $depends_on_answer;
+                    $all_rules[] = 'required_if:'.$depends_question.',==,'.$depends_on_answer;
                 } else {
-                    $all_rules[] = 'required_with:' . $depends_question;
+                    $all_rules[] = 'required_with:'.$depends_question;
                 }
             } else {
                 $all_rules[] = ['required'];
@@ -190,8 +184,8 @@ class Question extends Model implements Sortable
             $all_rules[] = Arr::wrap($custom_rules);
         }
 
-        if ($this->validation_rules_set && !empty($this->validation_rules_set)) {
-            if (!is_array($this->validation_rules_set)) {
+        if ($this->validation_rules_set && ! empty($this->validation_rules_set)) {
+            if (! is_array($this->validation_rules_set)) {
                 $all_rules[] = Arr::wrap($this->validation_rules_set);
             } else {
                 $all_rules[] = $this->validation_rules_set;
@@ -217,6 +211,7 @@ class Question extends Model implements Sortable
                 if (Str::contains($rule, '|')) {
                     $rule = explode('|', $rule);
                 }
+
                 return $rule;
             })->flatten()->toArray();
         } else {
@@ -231,7 +226,7 @@ class Question extends Model implements Sortable
         if (filled($value) && $value != 'none') {
             $this->is_dependend = true;
             $dep_question = self::where('name', $value)->first();
-            if ($dep_question && !$dep_question->has_options) {
+            if ($dep_question && ! $dep_question->has_options) {
                 $this->depends_on_answer = null;
             }
         } else {
@@ -240,6 +235,7 @@ class Question extends Model implements Sortable
         }
 
         $this->depends_on_question = $value;
+
         return $this;
     }
 
@@ -250,7 +246,7 @@ class Question extends Model implements Sortable
 
     public function getAutocompleteAttribute($value)
     {
-        if (!$value) {
+        if (! $value) {
             return 'off';
         }
 
@@ -276,7 +272,6 @@ class Question extends Model implements Sortable
         ];
     }
 
-
     public function getAutocompleteOptions()
     {
         return [
@@ -298,13 +293,12 @@ class Question extends Model implements Sortable
     /**
      * END TEST
      */
-
-
     public function getOptions()
     {
         $options = $this->question_answer_options->sortBy('order_column')->mapWithKeys(function ($option) {
             return [$option->key => $option->value];
         });
+
         return $options;
     }
 
@@ -415,6 +409,7 @@ class Question extends Model implements Sortable
         $fields = collect($this->field_types)->filter(function ($value, $key) {
             return $key == 'input' || $key == 'date';
         })->collapse()->toArray();
+
         return Arr::has($fields, $this->type);
     }
 }

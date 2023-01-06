@@ -2,11 +2,10 @@
 
 namespace Marshmallow\NovaFormbuilder\Events;
 
-use Marshmallow\NovaFormbuilder\Models\FormSubmission;
-use Marshmallow\NovaFormbuilder\Events\FormSubmissionMessage;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use Marshmallow\NovaFormbuilder\Models\FormSubmission;
 
 class FormSubmissionEvent
 {
@@ -23,6 +22,7 @@ class FormSubmissionEvent
 
         if (class_exists($submit_event)) {
             $event = new $submit_event($form_submission);
+
             return event($event);
         }
 

@@ -2,14 +2,12 @@
 
 namespace Marshmallow\NovaFormbuilder\Models;
 
-use Spatie\EloquentSortable\Sortable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\EloquentSortable\SortableTrait;
-use Marshmallow\NovaFormbuilder\Models\Form;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
-use Marshmallow\NovaFormbuilder\Models\Question;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
 class Step extends Model implements Sortable
 {

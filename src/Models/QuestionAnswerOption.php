@@ -2,12 +2,11 @@
 
 namespace Marshmallow\NovaFormbuilder\Models;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\EloquentSortable\Sortable;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\SortableTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Marshmallow\NovaFormbuilder\Models\Question;
 
 class QuestionAnswerOption extends Model implements Sortable
 {
@@ -44,7 +43,7 @@ class QuestionAnswerOption extends Model implements Sortable
     {
         $value = $this->value;
         $key = Str::of($value)->slug()->replace('-', '_')->toString();
-        $key_count = self::whereNot('id', $this->id)->where('value', 'like', $key . "%")->count();
+        $key_count = self::whereNot('id', $this->id)->where('value', 'like', $key.'%')->count();
         if ($key_count > 0) {
             $key = "{$key}_{$key_count}";
         }

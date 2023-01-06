@@ -2,17 +2,15 @@
 
 namespace Marshmallow\NovaFormbuilder\Models;
 
-use Illuminate\Support\Arr;
-use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Marshmallow\NovaFormbuilder\Models\Step;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Marshmallow\NovaFormbuilder\Models\QuestionAnswer;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Arr;
 use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
 use Marshmallow\NovaFormbuilder\Events\FormSubmissionEvent;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Concerns\HasUuid;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class FormSubmission extends Model implements HasMedia
 {
@@ -25,7 +23,7 @@ class FormSubmission extends Model implements HasMedia
     protected $guarded = [];
 
     protected $casts = [
-        'submitted_at' => 'datetime'
+        'submitted_at' => 'datetime',
     ];
 
     public static function boot()
@@ -33,7 +31,7 @@ class FormSubmission extends Model implements HasMedia
         parent::boot();
 
         static::created(function ($submission) {
-            if (!$submission->title) {
+            if (! $submission->title) {
                 $submission->title = $submission->getTitle();
                 $submission->saveQuietly();
             }
@@ -42,19 +40,18 @@ class FormSubmission extends Model implements HasMedia
 
     public function getTitle()
     {
-        $title = __("Formulier #") . $this->id . ": ";
+        $title = __('Formulier #').$this->id.': ';
         if ($this->formable) {
-
             $formable_title = $this->formable->title ?? null;
-            if (!$formable_title && $this->formable->full_name) {
+            if (! $formable_title && $this->formable->full_name) {
                 $formable_title = $this->formable->full_name;
-            } elseif (!$formable_title && $this->formable->name) {
+            } elseif (! $formable_title && $this->formable->name) {
                 $formable_title = $this->formable->name;
-            } elseif (!$formable_title && $this->formable->email) {
+            } elseif (! $formable_title && $this->formable->email) {
                 $formable_title = $this->formable->email;
             }
 
-            return $title . "{$this->form->name} - {$formable_title}";
+            return $title."{$this->form->name} - {$formable_title}";
         }
     }
 
@@ -81,6 +78,7 @@ class FormSubmission extends Model implements HasMedia
                     $answer = $answer[array_key_first($answer)];
                 }
             }
+
             return [$question_key => $answer];
         })->toArray();
 
@@ -105,6 +103,7 @@ class FormSubmission extends Model implements HasMedia
                 if ($field_key) {
                     return [$field_key->value => $value];
                 }
+
                 return [];
             })->reject(fn ($value) => empty($value));
     }
@@ -112,6 +111,7 @@ class FormSubmission extends Model implements HasMedia
     public function getMappedEmailAttribute()
     {
         $email_key = QuestionFieldMap::EMAIL->value;
+
         return Arr::get($this->mapped_answers, $email_key);
     }
 
@@ -166,7 +166,6 @@ class FormSubmission extends Model implements HasMedia
             });
     }
 
-
     public function hasImages()
     {
         return $this->getMedia('form_images')->count() ? true : false;
@@ -181,6 +180,7 @@ class FormSubmission extends Model implements HasMedia
     {
         $images = $this->getMedia('form_images');
         $main = $this->getMedia('form_image');
+
         return $main->merge($images);
     }
 
@@ -190,11 +190,11 @@ class FormSubmission extends Model implements HasMedia
         $model_data = $data['model'] ?? [];
         $answer_data = $data['answers'] ?? [];
 
-        if ($model_data && !empty($model_data)) {
+        if ($model_data && ! empty($model_data)) {
             $this->update($model_data);
         }
 
-        if (!$answer_data || empty($answer_data)) {
+        if (! $answer_data || empty($answer_data)) {
             return;
         }
 
@@ -225,6 +225,7 @@ class FormSubmission extends Model implements HasMedia
         foreach ($this->media_collection_names as $collection_name) {
             $items->add($this->getMedia($collection_name));
         }
+
         return $items->flatten();
     }
 
@@ -235,7 +236,7 @@ class FormSubmission extends Model implements HasMedia
         collect($answer_data)->each(function ($answer, $question_key) use ($stepQuestions, $answerData) {
             $question = $stepQuestions->where('name', $question_key)->first();
 
-            if (!$question || is_null($answer) || ($answer && !filled($answer))) {
+            if (! $question || is_null($answer) || ($answer && ! filled($answer))) {
                 return;
             }
 
@@ -245,14 +246,14 @@ class FormSubmission extends Model implements HasMedia
 
             if ($question->is_dependend && $question->depends_on_question) {
                 $dependsAnswer = Arr::get($answerData, $question->depends_on_question);
-                if (!$dependsAnswer || ($dependsAnswer && !filled($dependsAnswer))) {
+                if (! $dependsAnswer || ($dependsAnswer && ! filled($dependsAnswer))) {
                     return;
                 }
                 if ($dependsAnswer && $question->depends_on_answer) {
-                    if (!is_array($dependsAnswer) && $dependsAnswer !== $question->depends_on_answer) {
+                    if (! is_array($dependsAnswer) && $dependsAnswer !== $question->depends_on_answer) {
                         return;
                     }
-                    if (is_array($dependsAnswer) && !Arr::has($dependsAnswer, $question->depends_on_answer)) {
+                    if (is_array($dependsAnswer) && ! Arr::has($dependsAnswer, $question->depends_on_answer)) {
                         return;
                     }
                 }
@@ -281,6 +282,7 @@ class FormSubmission extends Model implements HasMedia
             $in_array = in_array($question_answer->answer_key, $answers);
             if ($in_array) {
                 unset($answers[$question_answer->answer_key]);
+
                 return true;
             } else {
                 $question_answer->delete();
@@ -376,6 +378,7 @@ class FormSubmission extends Model implements HasMedia
             } else {
                 $answer = $answer->pluck('answer_key', 'answer_key')->toArray();
             }
+
             return [$question_key => $answer];
         });
 
@@ -387,6 +390,7 @@ class FormSubmission extends Model implements HasMedia
 
         $all_answers = array_merge($default_answers, $answers);
         unset($all_answers['question_answers']);
+
         return $all_answers;
     }
 

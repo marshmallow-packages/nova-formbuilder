@@ -3,15 +3,13 @@
 namespace Marshmallow\NovaFormbuilder\Http\Livewire;
 
 use App\Models\User;
-use Livewire\Component;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Marshmallow\NovaFormbuilder\Http\Livewire\Traits\WithSteps;
 use Marshmallow\NovaFormbuilder\Models\Form;
 use Marshmallow\NovaFormbuilder\Models\FormSubmission;
-use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
 use Spatie\MediaLibraryPro\Http\Livewire\Concerns\WithMedia;
-use Marshmallow\NovaFormbuilder\Http\Livewire\Traits\WithSteps;
 
 class Step extends Component
 {
@@ -19,9 +17,13 @@ class Step extends Component
     use WithMedia;
 
     public $form_id;
+
     public $stepNumber;
+
     public $form_submission;
+
     public $full_width = false;
+
     public $sidebar = false;
 
     public FormSubmission $form_submission_model;
@@ -33,12 +35,15 @@ class Step extends Component
     ];
 
     public $model = \Marshmallow\NovaFormbuilder\Models\FormSubmission::class;
+
     public $model_id;
 
     public $media_collection = 'form_images';
+
     public $media_collection_single = 'form_image';
 
     public $session_key;
+
     public $session_value;
 
     public $mediaComponentNames = [];
@@ -69,8 +74,8 @@ class Step extends Component
             $this->full_width = true;
         }
 
-        $this->session_key = config('nova-formbuilder.session_key_prefix') . $form_id;
-        if (!empty($form_submission_data)) {
+        $this->session_key = config('nova-formbuilder.session_key_prefix').$form_id;
+        if (! empty($form_submission_data)) {
             $this->setFormSubmissionData($form_submission_data);
         } elseif (session()->has($this->session_key)) {
             $this->session_value = session($this->session_key);
@@ -109,14 +114,15 @@ class Step extends Component
         }
 
         $photos = $this->questions->filter(function ($question) {
-            if ($question->type == "photos" || $question->type == "photo") {
-                $question->state_name = 'state.' . $question->name;
-                if ($question->type == "photo") {
+            if ($question->type == 'photos' || $question->type == 'photo') {
+                $question->state_name = 'state.'.$question->name;
+                if ($question->type == 'photo') {
                     $question->multiple_photos = false;
                 } else {
                     $question->multiple_photos = true;
                 }
                 $this->mediaComponentNames[] = $question->media_collection_name;
+
                 return $question;
             }
         });
@@ -137,7 +143,7 @@ class Step extends Component
                     $this->has_autocomplete = true;
                 }
                 if ($question->prefill_with) {
-                    if (array_has($this->state, $question->name) && $this->state[$question->name] && !empty($this->state[$question->name])) {
+                    if (array_has($this->state, $question->name) && $this->state[$question->name] && ! empty($this->state[$question->name])) {
                         return;
                     }
                     [$type, $field] = explode('.', $question->prefill_with);
@@ -156,6 +162,7 @@ class Step extends Component
     public function render()
     {
         $this->showDepends();
+
         return view('nova-formbuilder::livewire.step');
     }
 
@@ -195,6 +202,7 @@ class Step extends Component
                 }
                 $question->display = $state_has_answer;
             }
+
             return $question;
         });
 
@@ -204,6 +212,7 @@ class Step extends Component
                 if (in_array($question->name, $dependents)) {
                     $question->has_dependents = true;
                 }
+
                 return $question;
             }
         );

@@ -2,28 +2,19 @@
 
 namespace Marshmallow\NovaFormbuilder\Nova;
 
-use Laravel\Nova\Resource;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Heading;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
-use Marshmallow\Nova\TinyMCE\TinyMCE;
-use Outl1ne\MultiselectField\Multiselect;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-
+use Laravel\Nova\Resource;
 
 class QuestionAnswer extends Resource
 {
     public static $perPageViaRelationship = 15;
+
     /**
      * The model the resource corresponds to.
      *
@@ -44,7 +35,7 @@ class QuestionAnswer extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'question_key', 'answer_key', 'answer_value'
+        'id', 'question_key', 'answer_key', 'answer_value',
     ];
 
     /**

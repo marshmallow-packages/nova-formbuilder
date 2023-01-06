@@ -2,28 +2,20 @@
 
 namespace Marshmallow\NovaFormbuilder\Nova;
 
-
-use Laravel\Nova\Panel;
-use Laravel\Nova\Resource;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Heading;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\MorphMany;
-use Marshmallow\Nova\TinyMCE\TinyMCE;
-use Marshmallow\Nova\Flexible\Flexible;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
+use Laravel\Nova\Resource;
+use Marshmallow\Nova\Flexible\Flexible;
 
 class Form extends Resource
 {
     public static $clickAction = 'detail';
+
     /**
      * The model the resource corresponds to.
      *
@@ -44,9 +36,8 @@ class Form extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name'
+        'id', 'name',
     ];
-
 
     /**
      * Get the fields displayed by the resource.

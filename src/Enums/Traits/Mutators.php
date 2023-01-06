@@ -12,6 +12,7 @@ trait Mutators
         foreach (self::cases() as $case) {
             $array[$case->value] = $case->title();
         }
+
         return $array;
     }
 
@@ -28,6 +29,7 @@ trait Mutators
         foreach (self::cases() as $case) {
             $array[$case->value] = $case->badge();
         }
+
         return
             array_merge([
                 '-' => '',

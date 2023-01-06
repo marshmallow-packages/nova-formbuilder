@@ -2,13 +2,11 @@
 
 namespace Marshmallow\NovaFormbuilder\Http\Livewire\Traits;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Marshmallow\NovaFormbuilder\Models\FormSubmission;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Honeypot\Http\Livewire\Concerns\HoneypotData;
 use Spatie\Honeypot\Http\Livewire\Concerns\UsesSpamProtection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 trait WithSteps
 {
@@ -17,18 +15,22 @@ trait WithSteps
     public HoneypotData $extraFields;
 
     public $isMainComponent = false;
+
     public $state = [];
+
     public $hasMedia = false;
 
     public $view = 'forms.create';
+
     public $media_questions;
 
     public $my_rules = [];
 
     public $formComponent = 'MMForms:Form';
-    public $stepComponent = 'MMForms:Step';
-    public $questionComponent = 'MMForms:Question';
 
+    public $stepComponent = 'MMForms:Step';
+
+    public $questionComponent = 'MMForms:Question';
 
     /**
      * Livewire lifecycle methods
@@ -95,7 +97,7 @@ trait WithSteps
         foreach ($this->state as $key => $value) {
             if (is_array($value)) {
                 foreach ($value as $value_key => $value_value) {
-                    if (!$value_value) {
+                    if (! $value_value) {
                         unset($this->state[$key][$value_key]);
                     }
                 }
@@ -117,7 +119,7 @@ trait WithSteps
     public function mergeRules($questions)
     {
         $questions->each(function ($question) {
-            if (!$question->active) {
+            if (! $question->active) {
                 return;
             }
             $rules = [];
@@ -154,7 +156,6 @@ trait WithSteps
         }
 
         if (is_array($values) && is_array($this->$key)) {
-
             $media_uuids = [];
             foreach ($this->$key as $photo) {
                 $media_uuids[] = $photo['uuid'];
@@ -182,7 +183,6 @@ trait WithSteps
         $this->state[$key] = null;
     }
 
-
     /**
      * Add Media
      */
@@ -195,8 +195,7 @@ trait WithSteps
             $this->deleteMedia($key, $value, $model);
         }
 
-        if ($this->hasMedia && $media_question && $this->$key && !empty($this->$key)) {
-
+        if ($this->hasMedia && $media_question && $this->$key && ! empty($this->$key)) {
             $multiple = false;
             if ($media_question->type == 'photos') {
                 $multiple = true;
@@ -213,7 +212,7 @@ trait WithSteps
                 }
 
                 $this->state[$key] = $media_uuids;
-            } elseif (!$multiple && $value !== $this->$key) {
+            } elseif (! $multiple && $value !== $this->$key) {
                 $collection_name = $key;
                 $model->addFromMediaLibraryRequest($this->$key)
                     ->toMediaCollection($collection_name);

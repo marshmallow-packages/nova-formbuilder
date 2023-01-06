@@ -4,9 +4,6 @@ namespace Marshmallow\NovaFormbuilder\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Marshmallow\NovaFormbuilder\Models\Question;
-use Marshmallow\NovaFormbuilder\Models\FormSubmission;
-use Marshmallow\NovaFormbuilder\Models\QuestionAnswerOption;
 
 class QuestionAnswer extends Model
 {

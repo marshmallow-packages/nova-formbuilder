@@ -2,49 +2,56 @@
 
 namespace Marshmallow\NovaFormbuilder\Http\Livewire\Traits;
 
-use Marshmallow\NovaFormbuilder\Models\Form;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Marshmallow\NovaFormbuilder\Events\FormSubmissionEvent;
-use Marshmallow\NovaFormbuilder\Models\FormSubmission;
 use Illuminate\Support\Facades\Auth;
-use Marshmallow\NovaFormbuilder\Http\Livewire\Traits\WithSteps;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Str;
 use Marshmallow\NovaFormbuilder\Http\Controllers\FormSubmissionController;
+use Marshmallow\NovaFormbuilder\Models\Form;
+use Marshmallow\NovaFormbuilder\Models\FormSubmission;
 
 trait WithForm
 {
     public $form_id;
+
     public $session_key;
+
     public $session_value;
 
     public $currentStep = 1;
+
     public $firstStep = 1;
+
     public $lastStep = 1;
 
     public $submitted = false;
+
     public $full_width = false;
 
     public $form;
+
     public $questions;
+
     public $steps;
 
     public $formSteps;
+
     public $formStepsArray;
 
     public $form_submission_id;
+
     public $form_submission_data;
 
     public $submission_morph_model_class;
+
     public $submission_morph_model_id;
 
     public $formComponent = 'MMForms:Form';
+
     public $stepComponent = 'MMForms:Step';
+
     public $questionComponent = 'MMForms:Question';
 
     protected $end_page_layout_name = 'form-end-page';
+
     public $end_page_layout = [
         'thanks_title' => null,
         'thanks_text' => null,
@@ -59,7 +66,7 @@ trait WithForm
             'submitMain',
             'submitData',
             'previousStep',
-            'nextStep'
+            'nextStep',
         ];
         $formComponent = $this->formComponent;
         foreach ($listeners as $listener) {
@@ -77,7 +84,7 @@ trait WithForm
             $this->full_width = true;
         }
 
-        $this->session_key = config('nova-formbuilder.session_key_prefix') . $this->form_id;
+        $this->session_key = config('nova-formbuilder.session_key_prefix').$this->form_id;
         if (session()->has($this->session_key)) {
             $this->session_value = session($this->session_key);
             $form_submission = FormSubmission::where('uuid', $this->session_value)->first();
@@ -115,6 +122,7 @@ trait WithForm
 
         $this->steps = $this->questions->mapToGroups(function ($item, $key) {
             $stepNumber = $item->step_number;
+
             return [$stepNumber => $item];
         })->map(function ($collection) {
             return $collection->sortBy(function ($item) {
@@ -122,7 +130,6 @@ trait WithForm
             })->values();
         })->sortKeys();
     }
-
 
     /**
      * Form Main Step Functions
@@ -140,7 +147,7 @@ trait WithForm
         }
 
         $this->submitted = true;
-        if (!Str::startsWith($on_submit, '?')) {
+        if (! Str::startsWith($on_submit, '?')) {
             redirect()->to($on_submit);
         }
     }
@@ -199,6 +206,7 @@ trait WithForm
     {
         if ($stepNumber == 0) {
             $this->nextStep();
+
             return;
         }
         if (config('nova-formbuilder.debug_forms')) {
@@ -206,7 +214,7 @@ trait WithForm
         }
 
         if ($stepNumber == $this->lastStep) {
-            if (!$this->form_submission_id) {
+            if (! $this->form_submission_id) {
                 $form_submission = $this->createFormSubmission($data);
                 $this->form_submission_id = $form_submission->id;
             }
@@ -230,7 +238,7 @@ trait WithForm
     /**
      * Get the form_submission.
      *
-     * @param array $input
+     * @param  array  $input
      * @return FormSubmission
      */
     public function getFormSubmissionData()
@@ -243,7 +251,7 @@ trait WithForm
     /**
      * Create the  form_submission.
      *
-     * @param array $input
+     * @param  array  $input
      * @return FormSubmission
      */
     public function createFormSubmission(array $input)
@@ -255,13 +263,14 @@ trait WithForm
         }
 
         $model = $this->getSubmissionModelType();
+
         return FormSubmissionController::create($model, $input, $step);
     }
 
     /**
      * Update the form_submission.
      *
-     * @param array $data
+     * @param  array  $data
      * @return void
      */
     public function updateFormSubmission(array $input, $last = false): FormSubmission
