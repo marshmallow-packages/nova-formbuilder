@@ -103,14 +103,6 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 ## TODO
 
-[] check if setting depends_on_question & still works
-[] check if setting validation rules & still works
-
-[] check custom blade components (mm)
-[] check component classes
-[] check livewire units & views
-[] check livewire custom components
-
 [] set configs & explanation for external packages like: spatie/laravel-honeypot & sortable
 [] remove media lib pro (make custom extension)
 [] add or remove Flex layouts ???
@@ -118,15 +110,11 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [] add JS & Css
 [] remove Ray calls (only in debug)
 [] add Tooltip alpineJs
-[] add all deps to readme (alpine, livewire etc.)
-
-[] Map to field -> nullable
-[] add default ->(null)
 
 // EXTRA
-[] create submissable form model like the org Notifiable
+[] Create submissable form model like the org Notifiable
 [] convert to formsubmit response
-[] set models in config
-[] set Livewire traits to implements
-[] remove nova restrictions per resource (authorizedToDelete etc.)
-[] make nova resources extendable
+[] Set models in config
+[] Set Livewire traits to implements
+[] Remove nova restrictions per resource (authorizedToDelete etc.)
+[] Make nova resources extendable
