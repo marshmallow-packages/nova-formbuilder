@@ -176,6 +176,9 @@ class Question extends Model implements Sortable
             }
         }
 
+        if ($this->type == 'password') {
+            $all_rules[] = Rules\Password::defaults();
+        }
         $custom_rules = $this->validation_rules;
         if ($custom_rules) {
             if (Str::contains($custom_rules, '|')) {
@@ -287,6 +290,9 @@ class Question extends Model implements Sortable
             'address-level2' => __('City'),
             'postal-code' => __('Zipcode'),
             'country-name' => __('Country'),
+            'country-name' => __('Country'),
+            'current-password' => __('Current Password'),
+            'new-password' => __('New Password'),
         ];
     }
 
@@ -322,6 +328,8 @@ class Question extends Model implements Sortable
             'numeric' => ('Number'),
             'regex:/^([0-9\s\-\+\(\)]*)$/|min:10' => __('Phonenumber'),
             'url' => __('Website'),
+            'confirmed' => __('Password & Confirm'),
+            'url' => __('Website'),
             'regex:/^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i' => __('Zipcode'),
         ];
 
@@ -343,6 +351,8 @@ class Question extends Model implements Sortable
                 'tel' => __('Phonenumber'),
                 'color' => __('Color'),
                 'url' => __('Website'),
+                'password' => __('Password'),
+                'password' => __('Password confirmation'),
             ],
             'text' => [
                 'textarea' => __('Textarea'),
