@@ -177,9 +177,6 @@ class Question extends Model implements Sortable
             }
         }
 
-        if ($this->type == 'password') {
-            $all_rules[] = Rules\Password::defaults();
-        }
         $custom_rules = $this->validation_rules;
         if ($custom_rules) {
             if (Str::contains($custom_rules, '|')) {
@@ -220,6 +217,10 @@ class Question extends Model implements Sortable
             })->flatten()->toArray();
         } else {
             $rules = [];
+        }
+
+        if ($this->type == 'password') {
+            $rules[] = Rules\Password::defaults();
         }
 
         return $rules;
