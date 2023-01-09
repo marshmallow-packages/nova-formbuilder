@@ -87,19 +87,19 @@
         @endisset
         {{-- pl-7 pr-12 --}}
         @if ($defer)
-            <x-mm-forms-question.default-input :required="$required" :id="$attributes['id']" :x-ref="$attributes['x-ref']" :type="$attributes['type']"
+            <x-mm-forms-questions.default-input :required="$required" :id="$attributes['id']" :x-ref="$attributes['x-ref']" :type="$attributes['type']"
                 :class="$class" :name="$attributes['name']" :value="$value" :autofocus="$autofocus" :type="$type"
                 :oninput="$onInput" :step="$step" :min="$min" :max="$max"
                 wire:model.defer="{{ $attributes['name'] }}" :placeholder="$placeholder" :autocomplete="$attributes['autocomplete']" :readonly="$readonly"
                 :disabled="$disabled" />
         @elseif($lazy)
-            <x-mm-forms-question.default-input :required="$required" :id="$attributes['id']" :x-ref="$attributes['x-ref']"
+            <x-mm-forms-questions.default-input :required="$required" :id="$attributes['id']" :x-ref="$attributes['x-ref']"
                 :class="$class" :step="$step" :min="$min" :max="$max" :type="$attributes['type']"
                 :name="$attributes['name']" :value="$value" :autofocus="$autofocus" :type="$type"
                 wire:model.lazy="{{ $attributes['name'] }}" :placeholder="$placeholder" :autocomplete="$attributes['autocomplete']" :readonly="$readonly"
                 :disabled="$disabled" />
         @else
-            <x-mm-forms-question.default-input :required="$required" :id="$attributes['id']" :type="$attributes['type']"
+            <x-mm-forms-questions.default-input :required="$required" :id="$attributes['id']" :type="$attributes['type']"
                 :class="$class" :step="$step" :min="$min" :max="$max" :name="$attributes['name']"
                 :value="$value" :autofocus="$autofocus" :type="$type" wire:model="{{ $attributes['name'] }}"
                 :placeholder="$placeholder" :autocomplete="$attributes['autocomplete']" :readonly="$readonly" :disabled="$disabled" />
