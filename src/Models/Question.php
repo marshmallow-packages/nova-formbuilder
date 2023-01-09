@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules;
 use Marshmallow\Nova\Flexible\Concerns\HasFlexible;
 use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
-use Illuminate\Validation\Rules;
 
 class Question extends Model implements Sortable
 {
