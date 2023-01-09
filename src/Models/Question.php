@@ -12,6 +12,7 @@ use Marshmallow\Nova\Flexible\Concerns\HasFlexible;
 use Marshmallow\NovaFormbuilder\Enums\QuestionFieldMap;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
+use Illuminate\Validation\Rules;
 
 class Question extends Model implements Sortable
 {
