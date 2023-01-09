@@ -354,7 +354,6 @@ class Question extends Model implements Sortable
                 'color' => __('Color'),
                 'url' => __('Website'),
                 'password' => __('Password'),
-                'password' => __('Password confirmation'),
             ],
             'text' => [
                 'textarea' => __('Textarea'),
