@@ -28,7 +28,7 @@
         "illuminate/database": "^9.0|^10.0",
         "illuminate/support": "^9.0|^10.0",
         "laravel/framework": "^9.0|^10.0",
-        "laravel/nova": "^4.14",
+        "laravel/nova": "^4.14|^5.0",
         "livewire/livewire": "^v2.10",
         "marshmallow/nova-flexible": "^v2.4",
         "marshmallow/nova-multiselect-field": "^5.0",
